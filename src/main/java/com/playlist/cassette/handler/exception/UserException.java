@@ -4,14 +4,18 @@ import lombok.Getter;
 
 @Getter
 public class UserException extends RuntimeException{
-    private String exceptionCode;
+    private ExceptionCode exceptionCode;
 
     public UserException() {
         super();
     }
 
-    public UserException(String exceptionCode, String message) {
+    public UserException(ExceptionCode exceptionCode, String message) {
         super(message);
+        this.exceptionCode = exceptionCode;
+    }
+
+    public UserException(ExceptionCode exceptionCode) {
         this.exceptionCode = exceptionCode;
     }
 
