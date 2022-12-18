@@ -4,18 +4,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ResponseHandler {
-    public static ResponseEntity<Object> generateResponse(String message, HttpStatus status, Object data) {
+    public static ResponseEntity<Object> generateResponse(HttpStatus status, Object object) {
         LocalDateTime timestamp = LocalDateTime.now();
-        Map<String, Object> map = new HashMap<>();
-        map.put("message", status.value());
-        map.put("timestamp", timestamp);
-        map.put("result", data);
+        Map<String, Object> responseData = new HashMap<>();
 
-        return new ResponseEntity<Object>(map,status);
+        responseData.put("message", status.value());
+        responseData.put("result", object);
+        responseData.put("timestamp", timestamp);
+
+        return new ResponseEntity<Object>(responseData, status);
     }
 }
