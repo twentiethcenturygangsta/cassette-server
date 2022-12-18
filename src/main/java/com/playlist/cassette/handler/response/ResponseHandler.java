@@ -16,6 +16,6 @@ public class ResponseHandler {
         responseData.put("result", object);
         responseData.put("timestamp", timestamp);
 
-        return new ResponseEntity<Object>(responseData, status);
+        return new ResponseEntity<>(responseData, status);
     }
 }
