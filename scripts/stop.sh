@@ -3,7 +3,8 @@
 PROJECT_ROOT="/home/ubuntu/app"
 JAR_FILE="$PROJECT_ROOT/spring-webapp.jar"
 
-DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
+LOG_PATH="/home/ubuntu/log"
+DEPLOY_LOG="$LOG_PATH/deploy.log"
 
 TIME_NOW=$(date +%c)
 
