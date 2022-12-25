@@ -1,4 +1,4 @@
-package com.playlist.cassette.repository;
+package com.playlist.cassette.client;
 
 import com.playlist.cassette.config.KakaoFeignConfiguration;
 import com.playlist.cassette.dto.auth.KakaoInfo;

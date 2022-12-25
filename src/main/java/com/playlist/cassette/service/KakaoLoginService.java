@@ -1,9 +1,8 @@
 package com.playlist.cassette.service;
 
-import com.playlist.cassette.dto.auth.KakaoAccount;
 import com.playlist.cassette.dto.auth.KakaoInfo;
 import com.playlist.cassette.dto.auth.KakaoToken;
-import com.playlist.cassette.repository.KakaoClient;
+import com.playlist.cassette.client.KakaoClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

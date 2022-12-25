@@ -20,7 +20,7 @@ public class KakaoLoginController {
     private final KakaoLoginService kakaoLoginService;
 
     @GetMapping("/callback")
-    public KakaoInfo getKakaoProfile(@RequestParam("code") String code) throws URISyntaxException {
+    public KakaoInfo getSocialLogin(@RequestParam("code") String code) throws URISyntaxException {
         return kakaoLoginService.getProfile(code);
     }
 }
