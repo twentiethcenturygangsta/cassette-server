@@ -23,10 +23,10 @@ public class Member {
     private String email;
     private String gender;
     private String age;
-    private String kakaoMemberId;
+    private Long kakaoMemberId;
 
     @Builder
-    public Member(String name, String email, String gender, String age, String kakaoMemberId) {
+    public Member(String name, String email, String gender, String age, Long kakaoMemberId) {
         this.name = name;
         this.email = email;
         this.gender = gender;
