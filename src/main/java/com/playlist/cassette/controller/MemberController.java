@@ -6,6 +6,7 @@ import com.playlist.cassette.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,13 @@ public class MemberController {
     public ResponseEntity<Object> getMember(@PathVariable String id) {
         Long memberId = Long.valueOf(id);
         MemberResponseDto member = memberService.getMember(memberId);
+        return ResponseHandler.generateResponse(HttpStatus.OK, member);
+    }
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<Object> removeMember(@PathVariable String id) {
+        Long memberId = Long.valueOf(id);
+        MemberResponseDto member = memberService.removeMember(memberId);
         return ResponseHandler.generateResponse(HttpStatus.OK, member);
     }
 }
