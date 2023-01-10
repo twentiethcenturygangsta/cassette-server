@@ -17,8 +17,10 @@ public class MemberService {
     public MemberResponseDto getMember(Long id) {
         Member member = memberRepository.findById(id).orElseThrow(() ->
                 new UserException(ExceptionCode.INVALID_MEMBER, ExceptionCode.INVALID_MEMBER.getMessage()));
-        MemberResponseDto memberResponseDto = MemberResponseDto.builder().member(member).build();
-        return memberResponseDto;
+        if (isWithdrawalMember(member)) {
+            throw new UserException(ExceptionCode.ALREADY_WITHDRAWAL_MEMBER, ExceptionCode.ALREADY_WITHDRAWAL_MEMBER.getMessage());
+        }
+        return MemberResponseDto.builder().member(member).build();
     }
 
     public MemberResponseDto createMember(Member member) {
@@ -42,6 +44,10 @@ public class MemberService {
 
     private boolean isExistMember(Member member) {
         return memberRepository.existsByKakaoMemberId(member.getKakaoMemberId());
+    }
+
+    private boolean isWithdrawalMember(Member member) {
+        return member.getIsRemoved();
     }
 
     private Member updateRejoinMember(Member member) {
