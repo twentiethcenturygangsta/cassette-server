@@ -26,4 +26,8 @@ public class BaseAuditEntity {
     public void updateRemovedStatus() {
         this.isRemoved = true;
     }
+
+    public void updateUnRemovedStatus() {
+        this.isRemoved = false;
+    }
 }
