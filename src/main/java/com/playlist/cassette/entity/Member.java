@@ -19,20 +19,18 @@ public class Member {
     @GeneratedValue
     @Column(name = "member_id")
     private Long id;
-
     private String name;
-
     private String email;
-
     private String gender;
-
     private String age;
+    private Long kakaoMemberId;
 
     @Builder
-    public Member(String name, String email, String gender, String age) {
+    public Member(String name, String email, String gender, String age, Long kakaoMemberId) {
         this.name = name;
         this.email = email;
         this.gender = gender;
         this.age = age;
+        this.kakaoMemberId = kakaoMemberId;
     }
 }

@@ -1,8 +1,10 @@
 package com.playlist.cassette.service;
 
+import com.playlist.cassette.client.KakaoTalkUser;
 import com.playlist.cassette.dto.auth.KakaoInfo;
 import com.playlist.cassette.dto.auth.KakaoToken;
 import com.playlist.cassette.client.KakaoClient;
+import com.playlist.cassette.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,7 @@ public class KakaoLoginService {
     @Value("${kakao.redirectUrl}")
     private String redirectUrl;
 
-    public KakaoInfo getProfile(String code) throws URISyntaxException {
+    private KakaoInfo getProfile(String code) throws URISyntaxException {
         KakaoToken kakaoToken = getToken(code);
 
         return kakaoClient.getProfile(
@@ -42,5 +44,14 @@ public class KakaoLoginService {
 
     private KakaoToken getToken(String code) throws URISyntaxException {
         return kakaoClient.getToken(new URI(kakaoAuthUrl), restAPIKey, redirectUrl, code, AUTHORIZATION_CODE);
+    }
+
+    public Member createMember(String code) throws URISyntaxException {
+        KakaoInfo kakaoInfo = getProfile(code);
+        KakaoTalkUser kakaoTalkUser = new KakaoTalkUser();
+        Member member = kakaoTalkUser.signup(kakaoInfo);
+        return member;
+
+
     }
 }
