@@ -28,9 +28,8 @@ public class MemberService {
         }
         Member existedMember = memberRepository.findByKakaoMemberId(member.getKakaoMemberId()).orElseThrow(() ->
                         new UserException(ExceptionCode.INVALID_MEMBER, ExceptionCode.INVALID_MEMBER.getMessage()));
+        updateRejoinMember(existedMember);
         return MemberResponseDto.builder().member(existedMember).build();
-
-//        throw new UserException(ExceptionCode.ALREADY_EXIST_MEMBER, ExceptionCode.ALREADY_EXIST_MEMBER.getMessage());
     }
 
     public MemberResponseDto removeMember(Long memberId) {
@@ -43,5 +42,13 @@ public class MemberService {
 
     private boolean isExistMember(Member member) {
         return memberRepository.existsByKakaoMemberId(member.getKakaoMemberId());
+    }
+
+    private Member updateRejoinMember(Member member) {
+        if (member.getIsRemoved()) {
+            member.updateUnRemovedStatus();
+            memberRepository.save(member);
+        }
+        return member;
     }
 }
