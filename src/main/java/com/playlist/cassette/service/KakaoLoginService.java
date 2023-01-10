@@ -49,9 +49,6 @@ public class KakaoLoginService {
     public Member createMember(String code) throws URISyntaxException {
         KakaoInfo kakaoInfo = getProfile(code);
         KakaoTalkUser kakaoTalkUser = new KakaoTalkUser();
-        Member member = kakaoTalkUser.signup(kakaoInfo);
-        return member;
-
-
+        return kakaoTalkUser.signup(kakaoInfo);
     }
 }
