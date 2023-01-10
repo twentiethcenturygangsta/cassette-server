@@ -25,7 +25,7 @@ public class MemberResponseDto {
     }
 
     private SocialLoginType getSocialLoginType(Member member) {
-        if (!member.getKakaoMemberId().isEmpty()) {
+        if (member.getKakaoMemberId() != null) {
             return SocialLoginType.KAKAO;
         }
         throw new UserException(

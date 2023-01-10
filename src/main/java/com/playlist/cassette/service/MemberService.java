@@ -26,10 +26,14 @@ public class MemberService {
             memberRepository.save(member);
             return MemberResponseDto.builder().member(member).build();
         }
-        throw new UserException(ExceptionCode.ALREADY_EXIST_MEMBER, ExceptionCode.ALREADY_EXIST_MEMBER.getMessage());
+        memberRepository.findByKakaoMemberId(member.getKakaoMemberId()).orElseThrow(() ->
+                        new UserException(ExceptionCode.INVALID_MEMBER, ExceptionCode.INVALID_MEMBER.getMessage()));
+        return MemberResponseDto.builder().member(member).build();
+
+//        throw new UserException(ExceptionCode.ALREADY_EXIST_MEMBER, ExceptionCode.ALREADY_EXIST_MEMBER.getMessage());
     }
 
     private boolean isExistMember(Member member) {
-        return memberRepository.existsById(member.getId());
+        return memberRepository.existsByKakaoMemberId(member.getKakaoMemberId());
     }
 }
