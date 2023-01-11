@@ -23,4 +23,11 @@ public class BaseAuditEntity {
     @Column(columnDefinition = "boolean default false")
     private Boolean isRemoved = false;
 
+    public void updateRemovedStatus() {
+        this.isRemoved = true;
+    }
+
+    public void updateUnRemovedStatus() {
+        this.isRemoved = false;
+    }
 }
