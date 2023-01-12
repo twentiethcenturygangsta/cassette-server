@@ -1,0 +1,2 @@
+package com.playlist.cassette.service;public class AuthService {
+}
