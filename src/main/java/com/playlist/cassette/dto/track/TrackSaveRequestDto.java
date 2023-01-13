@@ -9,14 +9,12 @@ public class TrackSaveRequestDto {
     private String tapeId;
     private String name;
     private String senderName;
-    private String fileName;
 
     @Builder
-    public TrackSaveRequestDto(String tapeId, String name, String senderName, String fileName) {
+    public TrackSaveRequestDto(String tapeId, String name, String senderName) {
         this.tapeId = tapeId;
         this.name = name;
         this.senderName = senderName;
-        this.fileName = fileName;
     }
 
     public Track toEntity() {
@@ -24,7 +22,6 @@ public class TrackSaveRequestDto {
                 .tapeId(Long.valueOf(tapeId))
                 .name(name)
                 .senderName(senderName)
-                .fileName(fileName)
                 .build();
     }
 }

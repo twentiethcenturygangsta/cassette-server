@@ -47,24 +47,31 @@ public class TrackService {
         return TrackResponseDto.builder().track(track).build();
     }
 
-    public TrackResponseDto createTrack(Track track, MultipartFile multipartFile, String dirName) throws IOException {
-        File uploadFile = convert(multipartFile)
+    public TrackResponseDto createTrack(TrackSaveRequestDto requestDto, MultipartFile multipartFile, String dirName) throws IOException {
+        Track track = trackRepository.save(requestDto.toEntity());
+
+        String type = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
+        String fileName = track.getTapeId() + "_" + track.getId() + type;
+
+        File uploadFile = convert(multipartFile, fileName)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
 
-        track.setAudioLink(upload(uploadFile, dirName));
+        String audioLink = upload(uploadFile, dirName);
+
+        track.update(fileName, audioLink);
         trackRepository.save(track);
 
         return TrackResponseDto.builder().track(track).build();
     }
 
-    public ResponseEntity<byte[]> downloadTrack(String audioLink) throws IOException {
-        String[] arr = audioLink.split("/");
-        String type = arr[arr.length - 1];
-        String fileName = "audio/" + URLEncoder.encode(type, "UTF-8").replaceAll("\\+", "%20");
+    public ResponseEntity<byte[]> downloadTrack(Long id, String dirName) throws IOException {
+        TrackResponseDto track = getTrack(id);
 
-        System.out.println(fileName);
+        String fileName = dirName + "/" + track.getFileName();
+        String type = fileName.substring(fileName.lastIndexOf("."));
+        String downName = URLEncoder.encode(track.getSenderName() + "'s Tape" + type, "UTF-8").replaceAll("\\+", "%20");;
 
-        S3Object s3Object = amazonS3Client.getObject(new GetObjectRequest(bucket, audioLink));
+        S3Object s3Object = amazonS3Client.getObject(new GetObjectRequest(bucket, fileName));
         S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
         byte[] bytes = IOUtils.toByteArray(objectInputStream);
 
@@ -72,7 +79,7 @@ public class TrackService {
         httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         httpHeaders.setContentLength(bytes.length);
 
-        httpHeaders.setContentDispositionFormData("attachment", fileName);
+        httpHeaders.setContentDispositionFormData("attachment", downName);
 
         return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
     }
@@ -97,8 +104,8 @@ public class TrackService {
         }
     }
 
-    private Optional<File> convert(MultipartFile file) throws IOException {
-        File convertFile = new File(file.getOriginalFilename());
+    private Optional<File> convert(MultipartFile file, String fileName) throws IOException {
+        File convertFile = new File(fileName);
         if(convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());

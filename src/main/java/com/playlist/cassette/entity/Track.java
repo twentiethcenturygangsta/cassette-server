@@ -19,7 +19,6 @@ public class Track extends BaseAuditEntity{
     private String name;
     private String senderName;
     private String fileName;
-    @Setter
     private String audioLink;
 
     @Builder
@@ -27,6 +26,11 @@ public class Track extends BaseAuditEntity{
         this.tapeId = tapeId;
         this.name = name;
         this.senderName = senderName;
+        this.fileName = fileName;
+        this.audioLink = audioLink;
+    }
+
+    public void update(String fileName, String audioLink) {
         this.fileName = fileName;
         this.audioLink = audioLink;
     }

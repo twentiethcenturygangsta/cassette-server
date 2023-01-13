@@ -19,7 +19,7 @@ public class TrackController {
 
     private final TrackService trackService;
 
-    @GetMapping("/track/get/{id}")
+    @GetMapping("/track/{id}")
     public ResponseEntity<Object> getTrack(@PathVariable String id) {
         Long trackId = Long.valueOf(id);
         TrackResponseDto track = trackService.getTrack(trackId);
@@ -29,14 +29,15 @@ public class TrackController {
     @PostMapping("/track")
     public ResponseEntity<Object> createTrack(TrackSaveRequestDto requestDto,
                                               @RequestParam("data") MultipartFile multipartFile) throws IOException {
-        TrackResponseDto track = trackService.createTrack(requestDto.toEntity(), multipartFile, "audio");
+        TrackResponseDto track = trackService.createTrack(requestDto, multipartFile, "audio");
 
         return ResponseHandler.generateResponse(HttpStatus.OK, track);
     }
 
-    @GetMapping("/track/download")
-    public ResponseEntity<byte[]> downloadTrack(String audioLink) throws IOException {
-        return trackService.downloadTrack(audioLink);
+    @GetMapping(path = "/track/download/{id}")
+    public ResponseEntity<byte[]> downloadTrack(@PathVariable("id") String id) throws IOException {
+        Long trackId = Long.valueOf(id);
+        return trackService.downloadTrack(trackId, "audio");
     }
 
 }
