@@ -12,6 +12,7 @@ public enum ExceptionCode {
     INVALID_SOCIAL_LOGIN_MEMBER(HttpStatus.BAD_REQUEST, "INVALID_SOCIAL_LOGIN_MEMBER", "멤버의 소셜로그인 타입이 존재하지 않습니다."),
 
     // Auth Exception
+    EXPIRED_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "EXPIRED_JWT_TOKEN", "만료된 토큰입니다."),
     EMPTY_TOKEN(HttpStatus.UNAUTHORIZED, "EMPTY_TOKEN", "유저 인증이 올바르지 않습니다.");
 
     private final HttpStatus statusCode;
