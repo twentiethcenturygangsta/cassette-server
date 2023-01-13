@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private final String contentType = "application/json;charset-UTF-8";
+    private final String contentType = "application/json;charset=UTF-8";
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, UserException {
