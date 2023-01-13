@@ -15,17 +15,27 @@ import java.time.LocalDateTime;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+    private final String contentType = "application/json;charset-UTF-8";
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, UserException {
         ExceptionCode exceptionCode = (ExceptionCode)request.getAttribute("exception");
         if (exceptionCode.equals(ExceptionCode.EMPTY_TOKEN)) {
             setResponse(response, ExceptionCode.EMPTY_TOKEN);
+        } else if (exceptionCode.equals(ExceptionCode.EXPIRED_JWT_TOKEN)) {
+            setResponse(response, ExceptionCode.EXPIRED_JWT_TOKEN);
+        } else if (exceptionCode.equals(ExceptionCode.INVALID_JWT_SIGNATURE)) {
+            setResponse(response, ExceptionCode.INVALID_JWT_SIGNATURE);
+        } else if (exceptionCode.equals(ExceptionCode.INVALID_JWT_TOKEN)) {
+            setResponse(response, ExceptionCode.INVALID_JWT_TOKEN);
+        } else if (exceptionCode.equals(ExceptionCode.UNSUPPORTED_JWT_TOKEN)) {
+            setResponse(response, ExceptionCode.UNSUPPORTED_JWT_TOKEN);
         }
     }
 
     private void setResponse(HttpServletResponse response, ExceptionCode exceptionCode) throws IOException {
-        response.setContentType("application/json;charset-UTF-8");
+        response.setContentType(contentType);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         JSONObject jsonObject = new JSONObject();
@@ -34,5 +44,4 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         jsonObject.put("message", exceptionCode.getMessage());
         response.getWriter().print(jsonObject);
     }
-
 }
