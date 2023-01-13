@@ -6,25 +6,25 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TrackSaveRequestDto {
-    private String tape_id;
+    private String tapeId;
     private String name;
-    private String sender_name;
-    private String file_name;
+    private String senderName;
+    private String fileName;
 
     @Builder
-    public TrackSaveRequestDto(String tape_id, String name, String sender_name, String file_name) {
-        this.tape_id = tape_id;
+    public TrackSaveRequestDto(String tapeId, String name, String senderName, String fileName) {
+        this.tapeId = tapeId;
         this.name = name;
-        this.sender_name = sender_name;
-        this.file_name = file_name;
+        this.senderName = senderName;
+        this.fileName = fileName;
     }
 
     public Track toEntity() {
         return Track.builder()
-                .tape_id(Long.valueOf(tape_id))
+                .tapeId(Long.valueOf(tapeId))
                 .name(name)
-                .sender_name(sender_name)
-                .file_name(file_name)
+                .senderName(senderName)
+                .fileName(fileName)
                 .build();
     }
 }

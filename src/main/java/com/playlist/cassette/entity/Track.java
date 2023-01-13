@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 import lombok.*;
 
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Track extends BaseAuditEntity{
@@ -16,18 +15,19 @@ public class Track extends BaseAuditEntity{
     @GeneratedValue
     @Column(name = "track_id")
     private Long id;
-    private Long tape_id;
+    private Long tapeId;
     private String name;
-    private String sender_name;
-    private String file_name;
-    private String audio_link;
+    private String senderName;
+    private String fileName;
+    @Setter
+    private String audioLink;
 
     @Builder
-    public Track(Long tape_id, String name, String sender_name, String file_name, String audio_link) {
-        this.tape_id = tape_id;
+    public Track(Long tapeId, String name, String senderName, String fileName, String audioLink) {
+        this.tapeId = tapeId;
         this.name = name;
-        this.sender_name = sender_name;
-        this.file_name = file_name;
-        this.audio_link = audio_link;
+        this.senderName = senderName;
+        this.fileName = fileName;
+        this.audioLink = audioLink;
     }
 }
