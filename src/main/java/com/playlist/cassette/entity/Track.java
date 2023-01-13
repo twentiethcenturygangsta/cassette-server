@@ -9,7 +9,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Track extends BaseAuditEntity{
+public class Track extends BaseAuditEntity {
 
     @Id
     @GeneratedValue
