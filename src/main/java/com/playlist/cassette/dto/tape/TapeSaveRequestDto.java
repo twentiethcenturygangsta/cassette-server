@@ -10,20 +10,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TapeSaveRequestDto {
     private String memberId;
-    private String colorId;
+    private String colorCode;
     private String name;
 
     @Builder
-    public TapeSaveRequestDto(String memberId, String colorId, String name) {
+    public TapeSaveRequestDto(String memberId, String colorCode, String name) {
         this.memberId = memberId;
-        this.colorId = colorId;
+        this.colorCode = colorCode;
         this.name = name;
     }
 
     public Tape toEntity() {
         return Tape.builder()
                 .memberId(Long.valueOf(memberId))
-                .colorId(Long.valueOf(colorId))
+                .colorCode(colorCode)
                 .name(name)
                 .build();
     }
