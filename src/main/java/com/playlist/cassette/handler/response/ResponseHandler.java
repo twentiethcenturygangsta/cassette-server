@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class ResponseHandler {
     public static ResponseEntity<Object> generateResponse(HttpStatus status, Object object) {
-        LocalDateTime timestamp = LocalDateTime.now();
+        String timestamp = String.valueOf(LocalDateTime.now());
         Map<String, Object> responseData = new HashMap<>();
 
         responseData.put("message", status.value());

@@ -13,14 +13,14 @@ public class ExceptionControllerAdvice {
 
     @ExceptionHandler
     public ResponseEntity<Error> badRequestExceptionHandle(UserException e) {
-        LocalDateTime timestamp = LocalDateTime.now();
+        String timestamp = String.valueOf(LocalDateTime.now());
         Error errorResult = new Error(timestamp, e.getExceptionCode().getCode(), e.getExceptionCode().getMessage());
         return new ResponseEntity<>(errorResult, e.getExceptionCode().getStatusCode());
     }
 
     @ExceptionHandler
     public ResponseEntity<Error> internalServerExceptionHandle(Exception e) {
-        LocalDateTime timestamp = LocalDateTime.now();
+        String timestamp = String.valueOf(LocalDateTime.now());
         Error errorResult = new Error(timestamp, "INTERNAL_SERVER_ERROR", e.getMessage());
         return new ResponseEntity<>(errorResult, HttpStatus.INTERNAL_SERVER_ERROR);
     }
