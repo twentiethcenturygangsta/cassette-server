@@ -12,4 +12,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     boolean existsByKakaoMemberId(Long id);
     Optional<Member> findByKakaoMemberId(Long id);
+    Optional<Member> findByRefreshToken(String refreshToken);
 }
