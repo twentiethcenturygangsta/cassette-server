@@ -21,6 +21,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
 
+    private final String exceptionProperty = "exception";
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -37,7 +38,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
                 request.setAttribute("UnAuthorization", jwtTokenProvider.validateToken(jwt));
-//                throwErrorMessage(jwtTokenProvider.validateToken(jwt));
+                throwErrorMessage(jwtTokenProvider.validateToken(jwt), request);
             }
 
         } catch (Exception exception) {
@@ -55,9 +56,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private void throwErrorMessage(JwtValidationType jwtValidationType) {
+    private void throwErrorMessage(JwtValidationType jwtValidationType, HttpServletRequest request) {
         if (jwtValidationType.equals(JwtValidationType.EMPTY_JWT)) {
-            throw new UserException(ExceptionCode.EMPTY_TOKEN, ExceptionCode.EMPTY_TOKEN.getMessage());
+            request.setAttribute(exceptionProperty, ExceptionCode.EMPTY_TOKEN);
+        } if (jwtValidationType.equals(JwtValidationType.EXPIRED_JWT_TOKEN)) {
+            request.setAttribute(exceptionProperty, ExceptionCode.EXPIRED_JWT_TOKEN);
+        } if (jwtValidationType.equals(JwtValidationType.INVALID_JWT_TOKEN)) {
+            request.setAttribute(exceptionProperty, ExceptionCode.INVALID_JWT_TOKEN);
+        } if (jwtValidationType.equals(JwtValidationType.INVALID_JWT_SIGNATURE)) {
+            request.setAttribute(exceptionProperty, ExceptionCode.INVALID_JWT_SIGNATURE);
+        } if (jwtValidationType.equals(JwtValidationType.UNSUPPORTED_JWT_TOKEN)) {
+            request.setAttribute(exceptionProperty, ExceptionCode.UNSUPPORTED_JWT_TOKEN);
         }
     }
 }
