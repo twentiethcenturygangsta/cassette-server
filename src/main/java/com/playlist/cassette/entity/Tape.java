@@ -1,17 +1,19 @@
 package com.playlist.cassette.entity;
 
-import com.playlist.cassette.random.RandomString;
+import com.playlist.cassette.utils.RandomStringUtils;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Tape extends BaseAuditEntity {
+
+    private static final int TAPE_LINK_LENGTH = 6;
+
     @Id
     @GeneratedValue
     @Column(name = "tape_id")
@@ -27,7 +29,7 @@ public class Tape extends BaseAuditEntity {
         this.memberId = memberId;
         this.colorCode = colorCode;
         this.name = name;
-        this.tapeLink = RandomString.RandomString();
+        this.tapeLink = RandomStringUtils.getRandomString(TAPE_LINK_LENGTH);
         this.audioLink = audioLink;
     }
 

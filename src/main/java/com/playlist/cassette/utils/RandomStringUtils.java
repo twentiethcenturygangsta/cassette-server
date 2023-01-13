@@ -1,12 +1,11 @@
-package com.playlist.cassette.random;
+package com.playlist.cassette.utils;
 
 import java.util.Random;
 
-public class RandomString {
-    public static String RandomString() {
-        Random random = new Random();
-        int length = 6;
+public abstract class RandomStringUtils {
 
+    private static final Random random = new Random();
+    public static String getRandomString(int length) {
         StringBuffer newWord = new StringBuffer();
         for(int i = 0; i < length; i++) {
             int choice = random.nextInt(3);
