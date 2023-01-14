@@ -18,7 +18,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<Object> getMember(Principal principal) {
         String memberId = principal.getName();
         MemberResponseDto member = memberService.getMember(Long.valueOf(memberId));
