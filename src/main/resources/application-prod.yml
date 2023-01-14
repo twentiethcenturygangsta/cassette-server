@@ -21,3 +21,6 @@ cloud:
     credentials:
       accessKey:
       secretKey:
+
+jwt:
+  secret:
