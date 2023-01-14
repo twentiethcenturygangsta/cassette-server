@@ -1,10 +1,9 @@
 package com.playlist.cassette.controller;
 
-import com.playlist.cassette.dto.auth.KakaoAccount;
-import com.playlist.cassette.dto.auth.KakaoInfo;
-import com.playlist.cassette.dto.member.MemberResponseDto;
+import com.playlist.cassette.dto.member.LoginResponseDto;
 import com.playlist.cassette.entity.Member;
 import com.playlist.cassette.handler.response.ResponseHandler;
+import com.playlist.cassette.service.AuthService;
 import com.playlist.cassette.service.KakaoLoginService;
 import com.playlist.cassette.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -25,11 +24,13 @@ public class KakaoLoginController {
 
     private final KakaoLoginService kakaoLoginService;
     private final MemberService memberService;
+    private final AuthService authService;
 
     @GetMapping("/callback")
     public ResponseEntity<Object> getSocialLogin(@RequestParam("code") String code) throws URISyntaxException {
         Member kakaoMember = kakaoLoginService.createMember(code);
-        MemberResponseDto member = memberService.createMember(kakaoMember);
-        return ResponseHandler.generateResponse(HttpStatus.OK, member);
+        Member member = memberService.createMember(kakaoMember);
+        LoginResponseDto loginResponseDto = authService.createLoginMember(member);
+        return ResponseHandler.generateResponse(HttpStatus.OK, loginResponseDto);
     }
 }

@@ -23,15 +23,15 @@ public class MemberService {
         return MemberResponseDto.builder().member(member).build();
     }
 
-    public MemberResponseDto createMember(Member member) {
+    public Member createMember(Member member) {
         if (!isExistMember(member)) {
             memberRepository.save(member);
-            return MemberResponseDto.builder().member(member).build();
+            return member;
         }
         Member existedMember = memberRepository.findByKakaoMemberId(member.getKakaoMemberId()).orElseThrow(() ->
                         new UserException(ExceptionCode.INVALID_MEMBER, ExceptionCode.INVALID_MEMBER.getMessage()));
         updateRejoinMember(existedMember);
-        return MemberResponseDto.builder().member(existedMember).build();
+        return existedMember;
     }
 
     public MemberResponseDto removeMember(Long memberId) {
@@ -50,11 +50,10 @@ public class MemberService {
         return member.getIsRemoved();
     }
 
-    private Member updateRejoinMember(Member member) {
+    private void updateRejoinMember(Member member) {
         if (member.getIsRemoved()) {
             member.updateUnRemovedStatus();
             memberRepository.save(member);
         }
-        return member;
     }
 }

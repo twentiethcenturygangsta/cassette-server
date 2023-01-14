@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,6 +26,8 @@ public class Member extends BaseAuditEntity{
     private String gender;
     private String age;
     private Long kakaoMemberId;
+    private String refreshToken;
+    private Date refreshTokenExpireTime;
 
     @Builder
     public Member(String name, String email, String gender, String age, Long kakaoMemberId) {
@@ -32,5 +36,10 @@ public class Member extends BaseAuditEntity{
         this.gender = gender;
         this.age = age;
         this.kakaoMemberId = kakaoMemberId;
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+        this.refreshTokenExpireTime = new Date();
     }
 }

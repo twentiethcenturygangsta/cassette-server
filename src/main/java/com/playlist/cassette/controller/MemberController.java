@@ -6,26 +6,26 @@ import com.playlist.cassette.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("api/v1/member")
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/user/{id}")
-    public ResponseEntity<Object> getMember(@PathVariable String id) {
-        Long memberId = Long.valueOf(id);
-        MemberResponseDto member = memberService.getMember(memberId);
+    @GetMapping()
+    public ResponseEntity<Object> getMember(Principal principal) {
+        String memberId = principal.getName();
+        MemberResponseDto member = memberService.getMember(Long.valueOf(memberId));
         return ResponseHandler.generateResponse(HttpStatus.OK, member);
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> removeMember(@PathVariable String id) {
         Long memberId = Long.valueOf(id);
         MemberResponseDto member = memberService.removeMember(memberId);
