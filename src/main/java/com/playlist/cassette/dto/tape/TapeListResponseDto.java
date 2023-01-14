@@ -2,6 +2,7 @@ package com.playlist.cassette.dto.tape;
 
 import com.playlist.cassette.dto.track.TrackResponseDto;
 import com.playlist.cassette.entity.Tape;
+import com.playlist.cassette.entity.Track;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class TapeListResponseDto {
     private String name;
     private String tapeLink;
     private String audioLink;
-    private List<TrackResponseDto> trackResponseDtos;
+    private List<Track> tracks;
 
     public TapeListResponseDto(Tape tape) {
         this.memberId = tape.getMemberId();
@@ -25,5 +26,6 @@ public class TapeListResponseDto {
         this.name = tape.getName();
         this.tapeLink = tape.getTapeLink();
         this.audioLink = tape.getAudioLink();
+        this.tracks = tape.getTracks();
     }
 }

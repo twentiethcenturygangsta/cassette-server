@@ -51,7 +51,7 @@ public class TrackService {
         Track track = trackRepository.save(requestDto.toEntity());
 
         String type = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
-        String fileName = track.getTapeId() + "_" + track.getId() + type;
+        String fileName = track.getTape().getId() + "_" + track.getId() + type;
 
         File uploadFile = convert(multipartFile, fileName).orElseThrow(() ->
                 new UserException(ExceptionCode.NOT_INVALID_FILE_FORMAT, ExceptionCode.NOT_INVALID_FILE_FORMAT.getMessage()));

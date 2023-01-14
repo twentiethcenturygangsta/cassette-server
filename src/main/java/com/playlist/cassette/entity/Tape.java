@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -23,6 +25,9 @@ public class Tape extends BaseAuditEntity {
     private String name;
     private String tapeLink;
     private String audioLink;
+
+    @OneToMany(mappedBy = "tape")
+    private List<Track> tracks;
 
     @Builder
     public Tape(Long memberId, String colorCode, String name, String audioLink) {
