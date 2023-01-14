@@ -2,7 +2,6 @@ package com.playlist.cassette.controller;
 
 import com.playlist.cassette.dto.track.TrackResponseDto;
 import com.playlist.cassette.dto.track.TrackSaveRequestDto;
-import com.playlist.cassette.entity.Track;
 import com.playlist.cassette.handler.response.ResponseHandler;
 import com.playlist.cassette.service.TrackService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,7 @@ public class TrackController {
     }
 
     @PostMapping("/track")
-    public ResponseEntity<Object> createTrack(TrackSaveRequestDto requestDto,
+    public ResponseEntity<Object> createTrack(@RequestBody TrackSaveRequestDto requestDto,
                                               @RequestParam("data") MultipartFile multipartFile) throws IOException {
         TrackResponseDto track = trackService.createTrack(requestDto, multipartFile, "audio");
 

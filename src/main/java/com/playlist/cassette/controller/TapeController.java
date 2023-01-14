@@ -1,10 +1,8 @@
 package com.playlist.cassette.controller;
 
-import com.playlist.cassette.dto.tape.TapeListResponseDto;
 import com.playlist.cassette.dto.tape.TapeResponseDto;
 import com.playlist.cassette.dto.tape.TapeSaveRequestDto;
 import com.playlist.cassette.dto.tape.TapeUpdateRequestDto;
-import com.playlist.cassette.entity.Tape;
 import com.playlist.cassette.handler.response.ResponseHandler;
 import com.playlist.cassette.service.TapeService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,7 +27,7 @@ public class TapeController {
     }
 
     @PostMapping("/tape")
-    public ResponseEntity<Object> createTape(TapeSaveRequestDto requestDto) {
+    public ResponseEntity<Object> createTape(@RequestBody TapeSaveRequestDto requestDto) {
         TapeResponseDto tape = tapeService.createTape(requestDto);
 
         return ResponseHandler.generateResponse(HttpStatus.OK, tape);
