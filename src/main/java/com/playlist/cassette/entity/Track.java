@@ -15,14 +15,16 @@ public class Track extends BaseAuditEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tape_id")
     private Tape tape;
+    private String colorCode;
     private String name;
     private String senderName;
     private String fileName;
     private String audioLink;
 
     @Builder
-    public Track(Tape tape, String name, String senderName, String fileName, String audioLink) {
+    public Track(Tape tape, String colorCode, String name, String senderName, String fileName, String audioLink) {
         this.tape = tape;
+        this.colorCode = colorCode;
         this.name = name;
         this.senderName = senderName;
         this.fileName = fileName;

@@ -1,5 +1,6 @@
 package com.playlist.cassette.controller;
 
+import com.playlist.cassette.dto.tape.TapeListResponseDto;
 import com.playlist.cassette.dto.tape.TapeResponseDto;
 import com.playlist.cassette.dto.tape.TapeSaveRequestDto;
 import com.playlist.cassette.dto.tape.TapeUpdateRequestDto;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,8 +25,7 @@ public class TapeController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getTape(@PathVariable("id") String id) {
         Long tapeId = Long.valueOf(id);
-        TapeResponseDto tape = tapeService.getTape(tapeId);
-        //List<TapeListResponseDto> tape = tapeService.getTape(tapeId);
+        List<TapeListResponseDto> tape = tapeService.getTape(tapeId);
         return ResponseHandler.generateResponse(HttpStatus.OK, tape);
     }
 

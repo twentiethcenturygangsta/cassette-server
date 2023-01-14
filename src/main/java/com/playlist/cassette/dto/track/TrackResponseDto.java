@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TrackResponseDto {
+    private Long trackId;
     private Long tapeId;
+    private String colorCode;
     private String name;
     private String senderName;
     private String fileName;
@@ -17,7 +19,9 @@ public class TrackResponseDto {
 
     @Builder
     public TrackResponseDto(Track track) {
+        this.trackId = track.getId();
         this.tapeId = track.getTape().getId();
+        this.colorCode = track.getColorCode();
         this.name = track.getName();
         this.senderName = track.getSenderName();
         this.fileName = track.getFileName();
