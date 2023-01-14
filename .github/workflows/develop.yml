@@ -45,6 +45,8 @@ jobs:
         kakao.restApiKey: ${{ secrets.KAKAO_REST_API_KEY }}
         spring.datasource.url: ${{ secrets.DATASOURCE_URL }}
         spring.datasource.password: ${{ secrets.DATASOURCE_PASSWORD }}
+        server.address: ${{ secrets.SERVER_ADDRESS }}
+        server.port: '8080'
 
     # (3) JDK 11 세팅
     - name: Set up JDK 11
