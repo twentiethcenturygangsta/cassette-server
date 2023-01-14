@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TapeResponseDto {
-    private Long memberId;
+    private Long tapeId;
     private String colorCode;
     private String name;
     private String tapeLink;
@@ -17,7 +17,7 @@ public class TapeResponseDto {
 
     @Builder
     public TapeResponseDto(Tape tape) {
-        this.memberId = tape.getMemberId();
+        this.tapeId = tape.getId();
         this.colorCode = tape.getColorCode();
         this.name = tape.getName();
         this.tapeLink = tape.getTapeLink();

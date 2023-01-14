@@ -3,9 +3,11 @@ package com.playlist.cassette.service;
 import com.playlist.cassette.dto.tape.TapeResponseDto;
 import com.playlist.cassette.dto.tape.TapeSaveRequestDto;
 import com.playlist.cassette.dto.tape.TapeUpdateRequestDto;
+import com.playlist.cassette.entity.Member;
 import com.playlist.cassette.entity.Tape;
 import com.playlist.cassette.handler.exception.ExceptionCode;
 import com.playlist.cassette.handler.exception.UserException;
+import com.playlist.cassette.repository.MemberRepository;
 import com.playlist.cassette.repository.TapeRepository;
 import com.playlist.cassette.repository.TrackRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import java.io.IOException;
 public class TapeService {
 
     private final TapeRepository tapeRepository;
+    private final MemberRepository memberRepository;
     private final TrackRepository trackRepository;
 
     public TapeResponseDto getTape(Long id) {
@@ -29,8 +32,10 @@ public class TapeService {
         return TapeResponseDto.builder().tape(tape).build();
     }
 
-    public TapeResponseDto createTape(TapeSaveRequestDto requestDto) {
-        Tape tape = tapeRepository.save(requestDto.toEntity());
+    public TapeResponseDto createTape(Long memberId, TapeSaveRequestDto requestDto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() ->
+                new UserException(ExceptionCode.INVALID_MEMBER, ExceptionCode.INVALID_MEMBER.getMessage()));
+        Tape tape = tapeRepository.save(requestDto.toEntity(member));
 
         return TapeResponseDto.builder().tape(tape).build();
     }
