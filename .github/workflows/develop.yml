@@ -18,6 +18,11 @@ env:
   S3_BUCKET_NAME: cassette-bucket
   CODE_DEPLOY_APPLICATION_NAME: cassette-codedeploy
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: cassette-codedeploy-deployment-group
+  cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  kakao.restApiKey: ${{ secrets.KAKAO_REST_API_KEY }}
+  spring.datasource.url: ${{ secrets.DATASOURCE_URL }}
+  spring.datasource.password: ${{ secrets.DATASOURCE_PASSWORD }}
   
 permissions:
   contents: read
