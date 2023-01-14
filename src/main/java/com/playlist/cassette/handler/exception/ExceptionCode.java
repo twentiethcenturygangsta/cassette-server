@@ -10,6 +10,9 @@ public enum ExceptionCode {
     ALREADY_EXIST_MEMBER(HttpStatus.BAD_REQUEST, "ALREADY_EXIST_MEMBER", "이미 존재하는 멤버입니다."),
     ALREADY_WITHDRAWAL_MEMBER(HttpStatus.NOT_FOUND, "ALREADY_WITHDRAWAL_MEMBER", "탈퇴한 멩버입니다."),
     INVALID_SOCIAL_LOGIN_MEMBER(HttpStatus.BAD_REQUEST, "INVALID_SOCIAL_LOGIN_MEMBER", "멤버의 소셜로그인 타입이 존재하지 않습니다."),
+    NOT_FOUND_TAPES(HttpStatus.NOT_FOUND, "NOT_FOUND_TAPES", "테이프가 존재하지 않습니다."),
+    NOT_FOUND_TRACKS(HttpStatus.NOT_FOUND, "NOT_FOUND_TRACKS", "트랙이 존재하지 않습니다."),
+    NOT_INVALID_FILE_FORMAT(HttpStatus.BAD_REQUEST, "NOT_INVALID_FILE_FORMAT", "S3 파일 업로드에 문제가 발생했습니다."),
 
     // Auth Exception
     EXPIRED_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "EXPIRED_JWT_TOKEN", "만료된 토큰입니다."),

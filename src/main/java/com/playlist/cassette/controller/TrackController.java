@@ -14,18 +14,19 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("api/v1/track")
 public class TrackController {
 
     private final TrackService trackService;
 
-    @GetMapping("/track/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Object> getTrack(@PathVariable String id) {
         Long trackId = Long.valueOf(id);
         TrackResponseDto track = trackService.getTrack(trackId);
         return ResponseHandler.generateResponse(HttpStatus.OK, track);
     }
 
-    @PostMapping("/track")
+    @PostMapping
     public ResponseEntity<Object> createTrack(@RequestBody TrackSaveRequestDto requestDto,
                                               @RequestParam("data") MultipartFile multipartFile) throws IOException {
         TrackResponseDto track = trackService.createTrack(requestDto, multipartFile, "audio");
@@ -33,7 +34,7 @@ public class TrackController {
         return ResponseHandler.generateResponse(HttpStatus.OK, track);
     }
 
-    @GetMapping(path = "/track/download/{id}")
+    @GetMapping(path = "/download/{id}")
     public ResponseEntity<byte[]> downloadTrack(@PathVariable("id") String id) throws IOException {
         Long trackId = Long.valueOf(id);
         return trackService.downloadTrack(trackId, "audio");

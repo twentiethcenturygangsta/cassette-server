@@ -1,11 +1,11 @@
 package com.playlist.cassette.service;
 
-import com.playlist.cassette.dto.tape.TapeListResponseDto;
 import com.playlist.cassette.dto.tape.TapeResponseDto;
 import com.playlist.cassette.dto.tape.TapeSaveRequestDto;
 import com.playlist.cassette.dto.tape.TapeUpdateRequestDto;
-import com.playlist.cassette.dto.track.TrackResponseDto;
 import com.playlist.cassette.entity.Tape;
+import com.playlist.cassette.handler.exception.ExceptionCode;
+import com.playlist.cassette.handler.exception.UserException;
 import com.playlist.cassette.repository.TapeRepository;
 import com.playlist.cassette.repository.TrackRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -25,7 +24,7 @@ public class TapeService {
 
     public TapeResponseDto getTape(Long id) {
         Tape tape = tapeRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("Tape이 없습니다."));
+                new UserException(ExceptionCode.NOT_FOUND_TAPES, ExceptionCode.NOT_FOUND_TAPES.getMessage()));
 
         return TapeResponseDto.builder().tape(tape).build();
     }
@@ -38,7 +37,7 @@ public class TapeService {
 
     public TapeResponseDto updateTape(Long id, TapeUpdateRequestDto requestDto) {
         Tape tape = tapeRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("Tape이 없습니다."));
+                new UserException(ExceptionCode.NOT_FOUND_TAPES, ExceptionCode.NOT_FOUND_TAPES.getMessage()));
 
         tape.update(requestDto.getColorCode(), requestDto.getName());
         tapeRepository.save(tape);

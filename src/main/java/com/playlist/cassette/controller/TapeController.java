@@ -14,11 +14,12 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("api/v1/tape")
 public class TapeController {
 
     private final TapeService tapeService;
 
-    @GetMapping("/tape/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Object> getTape(@PathVariable("id") String id) {
         Long tapeId = Long.valueOf(id);
         TapeResponseDto tape = tapeService.getTape(tapeId);
@@ -26,7 +27,7 @@ public class TapeController {
         return ResponseHandler.generateResponse(HttpStatus.OK, tape);
     }
 
-    @PostMapping("/tape")
+    @PostMapping
     public ResponseEntity<Object> createTape(@RequestBody TapeSaveRequestDto requestDto) {
         TapeResponseDto tape = tapeService.createTape(requestDto);
 
