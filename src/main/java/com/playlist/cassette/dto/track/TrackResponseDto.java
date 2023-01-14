@@ -17,7 +17,7 @@ public class TrackResponseDto {
 
     @Builder
     public TrackResponseDto(Track track) {
-        this.tapeId = track.getTapeId();
+        this.tapeId = track.getTape().getId();
         this.name = track.getName();
         this.senderName = track.getSenderName();
         this.fileName = track.getFileName();

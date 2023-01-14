@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -18,15 +21,20 @@ public class Tape extends BaseAuditEntity {
     @GeneratedValue
     @Column(name = "tape_id")
     private Long id;
-    private Long memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @OneToMany(mappedBy = "tape", cascade = CascadeType.ALL)
+    private List<Track> tracks = new ArrayList<>();
     private String colorCode;
     private String name;
     private String tapeLink;
     private String audioLink;
 
     @Builder
-    public Tape(Long memberId, String colorCode, String name, String audioLink) {
-        this.memberId = memberId;
+    public Tape(Member member, String colorCode, String name, String audioLink) {
+        this.member = member;
         this.colorCode = colorCode;
         this.name = name;
         this.tapeLink = RandomStringUtils.getRandomString(TAPE_LINK_LENGTH);

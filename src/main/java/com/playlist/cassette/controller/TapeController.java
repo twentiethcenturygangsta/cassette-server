@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,21 +29,22 @@ public class TapeController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createTape(@RequestBody TapeSaveRequestDto requestDto) {
-        TapeResponseDto tape = tapeService.createTape(requestDto);
+    public ResponseEntity<Object> createTape(@RequestBody TapeSaveRequestDto requestDto, Principal principal) {
+        Long memberId = Long.valueOf(principal.getName());
+        TapeResponseDto tape = tapeService.createTape(memberId, requestDto);
 
         return ResponseHandler.generateResponse(HttpStatus.OK, tape);
     }
 
-    @PutMapping("/tape/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Object> updateTape(@PathVariable("id") String id,
-                                             TapeUpdateRequestDto requestDto) {
+                                             @RequestBody TapeUpdateRequestDto requestDto) {
         Long tapeId = Long.valueOf(id);
         TapeResponseDto tape = tapeService.updateTape(tapeId, requestDto);
         return ResponseHandler.generateResponse(HttpStatus.OK, tape);
     }
 
-    @GetMapping(path = "/tape/download/{id}")
+    @GetMapping(path = "/download/{id}")
     public ResponseEntity<byte[]> downloadTape(@PathVariable("id") String id) throws IOException {
         Long tapeId = Long.valueOf(id);
         return tapeService.downloadTape(tapeId, "audio");

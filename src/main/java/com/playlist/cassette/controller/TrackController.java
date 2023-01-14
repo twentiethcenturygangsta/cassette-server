@@ -27,7 +27,7 @@ public class TrackController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createTrack(@RequestBody TrackSaveRequestDto requestDto,
+    public ResponseEntity<Object> createTrack(TrackSaveRequestDto requestDto,
                                               @RequestParam("data") MultipartFile multipartFile) throws IOException {
         TrackResponseDto track = trackService.createTrack(requestDto, multipartFile, "audio");
 

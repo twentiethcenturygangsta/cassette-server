@@ -1,15 +1,14 @@
 package com.playlist.cassette.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Getter
@@ -28,6 +27,9 @@ public class Member extends BaseAuditEntity{
     private Long kakaoMemberId;
     private String refreshToken;
     private Date refreshTokenExpireTime;
+
+    @OneToMany(mappedBy = "member")
+    private List<Tape> tapes = new ArrayList<>();
 
     @Builder
     public Member(String name, String email, String gender, String age, Long kakaoMemberId) {

@@ -3,15 +3,16 @@ package com.playlist.cassette.service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
-import com.playlist.cassette.dto.member.MemberResponseDto;
+
 import com.playlist.cassette.dto.track.TrackResponseDto;
 import com.playlist.cassette.dto.track.TrackSaveRequestDto;
-import com.playlist.cassette.entity.Member;
+import com.playlist.cassette.entity.Tape;
 import com.playlist.cassette.entity.Track;
 import com.playlist.cassette.handler.exception.ExceptionCode;
 import com.playlist.cassette.handler.exception.UserException;
-import com.playlist.cassette.handler.response.ResponseHandler;
+import com.playlist.cassette.repository.TapeRepository;
 import com.playlist.cassette.repository.TrackRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +36,7 @@ import java.util.Optional;
 public class TrackService {
 
     private final AmazonS3Client amazonS3Client;
+    private final TapeRepository tapeRepository;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
@@ -47,11 +49,14 @@ public class TrackService {
         return TrackResponseDto.builder().track(track).build();
     }
 
+    @Transactional
     public TrackResponseDto createTrack(TrackSaveRequestDto requestDto, MultipartFile multipartFile, String dirName) throws IOException {
-        Track track = trackRepository.save(requestDto.toEntity());
+        Tape tape = tapeRepository.findById(requestDto.getTapeId()).orElseThrow(() ->
+                new UserException(ExceptionCode.NOT_FOUND_TAPES, ExceptionCode.NOT_FOUND_TAPES.getMessage()));
+        Track track = trackRepository.save(requestDto.toEntity(tape));
 
         String type = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
-        String fileName = track.getTapeId() + "_" + track.getId() + type;
+        String fileName = track.getTape().getId() + "_" + track.getId() + type;
 
         File uploadFile = convert(multipartFile, fileName).orElseThrow(() ->
                 new UserException(ExceptionCode.NOT_INVALID_FILE_FORMAT, ExceptionCode.NOT_INVALID_FILE_FORMAT.getMessage()));
