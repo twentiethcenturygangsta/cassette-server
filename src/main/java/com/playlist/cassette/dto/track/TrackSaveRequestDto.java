@@ -8,12 +8,14 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TrackSaveRequestDto {
     private Long tapeId;
+    private String colorCode;
     private String name;
     private String senderName;
 
     @Builder
-    public TrackSaveRequestDto(Long tapeId, String name, String senderName) {
+    public TrackSaveRequestDto(Long tapeId, String colorCode, String name, String senderName) {
         this.tapeId = tapeId;
+        this.colorCode = colorCode;
         this.name = name;
         this.senderName = senderName;
     }
@@ -21,6 +23,7 @@ public class TrackSaveRequestDto {
     public Track toEntity(Tape tape) {
         return Track.builder()
                 .tape(tape)
+                .colorCode(colorCode)
                 .name(name)
                 .senderName(senderName)
                 .build();

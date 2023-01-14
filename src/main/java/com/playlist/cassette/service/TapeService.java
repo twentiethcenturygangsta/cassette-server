@@ -1,5 +1,6 @@
 package com.playlist.cassette.service;
 
+import com.playlist.cassette.dto.tape.TapeListResponseDto;
 import com.playlist.cassette.dto.tape.TapeResponseDto;
 import com.playlist.cassette.dto.tape.TapeSaveRequestDto;
 import com.playlist.cassette.dto.tape.TapeUpdateRequestDto;
@@ -16,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -25,11 +28,10 @@ public class TapeService {
     private final MemberRepository memberRepository;
     private final TrackRepository trackRepository;
 
-    public TapeResponseDto getTape(Long id) {
-        Tape tape = tapeRepository.findById(id).orElseThrow(() ->
-                new UserException(ExceptionCode.NOT_FOUND_TAPES, ExceptionCode.NOT_FOUND_TAPES.getMessage()));
-
-        return TapeResponseDto.builder().tape(tape).build();
+    public List<TapeListResponseDto> getTapes(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() ->
+                new UserException(ExceptionCode.INVALID_MEMBER, ExceptionCode.INVALID_MEMBER.getMessage()));
+        return tapeRepository.findTapeByMember(member).stream().map(TapeListResponseDto::new).collect(Collectors.toList());
     }
 
     public TapeResponseDto createTape(Long memberId, TapeSaveRequestDto requestDto) {
