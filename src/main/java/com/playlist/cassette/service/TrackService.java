@@ -42,7 +42,7 @@ public class TrackService {
 
     public TrackResponseDto getTrack(Long id) {
         Track track = trackRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("Track이 없습니다."));
+                new UserException(ExceptionCode.NOT_FOUND_TRACKS, ExceptionCode.NOT_FOUND_TRACKS.getMessage()));
 
         return TrackResponseDto.builder().track(track).build();
     }
@@ -53,8 +53,8 @@ public class TrackService {
         String type = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
         String fileName = track.getTapeId() + "_" + track.getId() + type;
 
-        File uploadFile = convert(multipartFile, fileName)
-                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
+        File uploadFile = convert(multipartFile, fileName).orElseThrow(() ->
+                new UserException(ExceptionCode.NOT_INVALID_FILE_FORMAT, ExceptionCode.NOT_INVALID_FILE_FORMAT.getMessage()));
 
         String audioLink = upload(uploadFile, dirName);
 
