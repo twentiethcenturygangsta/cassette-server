@@ -14,7 +14,7 @@ on:
     branches: [ "develop" ]
     
 env:
-  RESOURCE_PATH: ./src/main/resources/application-prod.yaml
+  RESOURCE_PATH: ./src/main/resources/application-prod.yml
   AWS_REGION: ap-northeast-2
   S3_BUCKET_NAME: cassette-bucket
   CODE_DEPLOY_APPLICATION_NAME: cassette-codedeploy
