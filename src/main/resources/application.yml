@@ -1,0 +1,33 @@
+servlet:
+  multipart:
+    max-file-size: 100MB
+    max-request-size : 100MB
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
+feign:
+  client:
+    config:
+      default:
+        logger-level: FULL
+  httpclient:
+    enabled: true
+
+kakao:
+  authUrl: https://kauth.kakao.com/oauth/token
+  userApiUrl: https://kapi.kakao.com/v2/user/me
+  redirectUrl: http://localhost:8080/callback
+
+cloud:
+  aws:
+    credentials:
+      instanceProfile: true
+    s3:
+      bucket: cassette-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
