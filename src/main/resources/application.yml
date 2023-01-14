@@ -3,11 +3,6 @@ servlet:
     max-file-size: 100MB
     max-request-size : 100MB
 
-logging:
-  level:
-    org.hibernate.SQL: debug
-    org.hibernate.type: trace
-
 feign:
   client:
     config:
