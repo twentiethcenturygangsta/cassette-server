@@ -6,15 +6,19 @@ import com.playlist.cassette.config.security.jwt.UserAuthentication;
 import com.playlist.cassette.dto.auth.JwtTokenDto;
 import com.playlist.cassette.dto.member.LoginResponseDto;
 import com.playlist.cassette.dto.member.MemberResponseDto;
+import com.playlist.cassette.dto.tape.TapeResponseDto;
 import com.playlist.cassette.entity.Member;
 import com.playlist.cassette.handler.exception.ExceptionCode;
 import com.playlist.cassette.handler.exception.UserException;
 import com.playlist.cassette.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +28,7 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
+    @Transactional
     public LoginResponseDto createLoginMember(Member member) {
         Authentication authentication = new UserAuthentication(member.getId(), null, null);
         String accessToken = jwtTokenProvider.generateAccessToken(authentication);
@@ -39,9 +44,11 @@ public class AuthService {
         MemberResponseDto memberResponseDto = MemberResponseDto.builder()
                 .member(member)
                 .build();
+        List<TapeResponseDto> tapes = member.getTapes().stream().map(TapeResponseDto::new).toList();
         return LoginResponseDto.builder()
                 .jwtInformation(jwtTokenDto)
                 .memberInformation(memberResponseDto)
+                .tapes(tapes)
                 .build();
     }
 
