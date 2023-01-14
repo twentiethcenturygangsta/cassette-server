@@ -28,8 +28,10 @@ public class TapeService {
     private final MemberRepository memberRepository;
     private final TrackRepository trackRepository;
 
-    public List<TapeListResponseDto> getTape(Long id) {
-        return tapeRepository.findById(id).stream().map(TapeListResponseDto::new).collect(Collectors.toList());
+    public List<TapeListResponseDto> getTapes(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() ->
+                new UserException(ExceptionCode.INVALID_MEMBER, ExceptionCode.INVALID_MEMBER.getMessage()));
+        return tapeRepository.findTapeByMember(member).stream().map(TapeListResponseDto::new).collect(Collectors.toList());
     }
 
     public TapeResponseDto createTape(Long memberId, TapeSaveRequestDto requestDto) {

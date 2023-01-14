@@ -22,10 +22,10 @@ public class TapeController {
 
     private final TapeService tapeService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getTape(@PathVariable("id") String id) {
-        Long tapeId = Long.valueOf(id);
-        List<TapeListResponseDto> tape = tapeService.getTape(tapeId);
+    @GetMapping
+    public ResponseEntity<Object> getTapes(Principal principal) {
+        Long memberId = Long.valueOf(principal.getName());
+        List<TapeListResponseDto> tape = tapeService.getTapes(memberId);
         return ResponseHandler.generateResponse(HttpStatus.OK, tape);
     }
 
