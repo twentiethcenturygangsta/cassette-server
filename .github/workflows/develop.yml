@@ -47,6 +47,8 @@ jobs:
         spring.datasource.password: ${{ secrets.DATASOURCE_PASSWORD }}
         server.address: ${{ secrets.SERVER_ADDRESS }}
         server.port: '8080'
+        jwt.secret: ${{ secrets.JWT_SECRET }}
+        
 
     # (3) JDK 11 세팅
     - name: Set up JDK 11
