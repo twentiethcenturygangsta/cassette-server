@@ -57,19 +57,14 @@ public class JwtTokenProvider {
             Jwts.parser().setSigningKey(getJwtSecretKey()).parseClaimsJws(token);
             return JwtValidationType.VALID_JWT;
         } catch (SignatureException ex) {
-            log.error(String.valueOf(JwtValidationType.INVALID_JWT_SIGNATURE));
             return JwtValidationType.INVALID_JWT_SIGNATURE;
         } catch (MalformedJwtException ex) {
-            log.error(String.valueOf(JwtValidationType.INVALID_JWT_TOKEN));
             return JwtValidationType.INVALID_JWT_TOKEN;
         } catch (ExpiredJwtException ex) {
-            log.error(String.valueOf(JwtValidationType.EXPIRED_JWT_TOKEN));
             return JwtValidationType.EXPIRED_JWT_TOKEN;
         } catch (UnsupportedJwtException ex) {
-            log.error(String.valueOf(JwtValidationType.UNSUPPORTED_JWT_TOKEN));
             return JwtValidationType.UNSUPPORTED_JWT_TOKEN;
         } catch (IllegalArgumentException ex) {
-            log.error(String.valueOf(JwtValidationType.EMPTY_JWT));
             return JwtValidationType.EMPTY_JWT;
         }
     }
