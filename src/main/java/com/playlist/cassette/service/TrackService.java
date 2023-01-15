@@ -35,11 +35,8 @@ import java.util.Optional;
 @Service
 public class TrackService {
 
-    private final AmazonS3Client amazonS3Client;
+    private final AwsS3Service awsS3Service;
     private final TapeRepository tapeRepository;
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
-
     private final TrackRepository trackRepository;
 
     public TrackResponseDto getTrack(Long id) {
@@ -61,7 +58,7 @@ public class TrackService {
         File uploadFile = convert(multipartFile, fileName).orElseThrow(() ->
                 new UserException(ExceptionCode.NOT_INVALID_FILE_FORMAT, ExceptionCode.NOT_INVALID_FILE_FORMAT.getMessage()));
 
-        String audioLink = upload(uploadFile, dirName);
+        String audioLink = awsS3Service.upload(uploadFile, dirName);
 
         track.update(fileName, audioLink);
         trackRepository.save(track);
@@ -76,37 +73,7 @@ public class TrackService {
         String type = fileName.substring(fileName.lastIndexOf("."));
         String downName = URLEncoder.encode(track.getSenderName() + "'s Tape" + type, "UTF-8").replaceAll("\\+", "%20");;
 
-        S3Object s3Object = amazonS3Client.getObject(new GetObjectRequest(bucket, fileName));
-        S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
-        byte[] bytes = IOUtils.toByteArray(objectInputStream);
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        httpHeaders.setContentLength(bytes.length);
-
-        httpHeaders.setContentDispositionFormData("attachment", downName);
-
-        return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
-    }
-
-    private String upload(File uploadFile, String dirName) {
-        String fileName = dirName + "/" + uploadFile.getName();
-        String uploadFileUrl = putS3(uploadFile, fileName);
-        removeNewFile(uploadFile);
-        return uploadFileUrl;
-    }
-
-    private String putS3(File uploadFile, String fileName) {
-        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonS3Client.getUrl(bucket, fileName).toString();
-    }
-
-    private void removeNewFile(File targetFile) {
-        if (targetFile.delete()) {
-            log.info("파일이 삭제되었습니다.");
-        } else {
-            log.info("파일이 삭제되지 못했습니다.");
-        }
+        return awsS3Service.download(fileName, downName);
     }
 
     private Optional<File> convert(MultipartFile file, String fileName) throws IOException {

@@ -17,6 +17,7 @@ public class TapeListResponseDto {
     private String colorCode;
     private String name;
     private String tapeLink;
+    private String fileName;
     private String audioLink;
     private List<TrackResponseDto> tracks;
 
@@ -24,6 +25,7 @@ public class TapeListResponseDto {
         this.colorCode = tape.getColorCode();
         this.name = tape.getName();
         this.tapeLink = tape.getTapeLink();
+        this.fileName = tape.getFileName();
         this.audioLink = tape.getAudioLink();
         this.tracks = tape.getTracks().stream().map(TrackResponseDto::new).collect(Collectors.toList());
     }
