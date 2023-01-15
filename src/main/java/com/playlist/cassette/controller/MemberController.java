@@ -25,10 +25,10 @@ public class MemberController {
         return ResponseHandler.generateResponse(HttpStatus.OK, member);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> removeMember(@PathVariable String id) {
-        Long memberId = Long.valueOf(id);
-        MemberResponseDto member = memberService.removeMember(memberId);
+    @DeleteMapping("/withdrawal")
+    public ResponseEntity<Object> removeMember(Principal principal) {
+        String memberId = principal.getName();
+        MemberResponseDto member = memberService.removeMember(Long.valueOf(memberId));
         return ResponseHandler.generateResponse(HttpStatus.OK, member);
     }
 }
