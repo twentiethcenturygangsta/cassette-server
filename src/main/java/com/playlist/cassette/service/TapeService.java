@@ -13,6 +13,7 @@ import com.playlist.cassette.handler.exception.UserException;
 import com.playlist.cassette.repository.MemberRepository;
 import com.playlist.cassette.repository.TapeRepository;
 import com.playlist.cassette.repository.TrackRepository;
+import com.playlist.cassette.utils.RemoveFileUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,7 @@ import java.util.stream.Collectors;
 @Service
 public class TapeService {
 
+    private final int FIRST_BASE_FILE_INDEX = 1;
     private final AwsS3Service awsS3Service;
     private final TapeRepository tapeRepository;
     private final MemberRepository memberRepository;
@@ -76,14 +78,14 @@ public class TapeService {
                 new UserException(ExceptionCode.NOT_FOUND_TAPES, ExceptionCode.NOT_FOUND_TAPES.getMessage()));
 
         if(tape.getAudioLink() == null) {
-            List<TrackResponseDto> trackList = trackRepository.findTrackByTape(tape).stream().map(TrackResponseDto::new).collect(Collectors.toList());
+            List<TrackResponseDto> tracks = trackRepository.findTrackByTape(tape).stream().map(TrackResponseDto::new).collect(Collectors.toList());
 
             String folderPath = "src/main/" + tapeId + "TapeFolder";
             File folder = new File(folderPath);
             if(!folder.exists()) folder.mkdir();
 
-            for(int i=0; i<trackList.size(); i++) {
-                TrackResponseDto track = trackList.get(i);
+            for(int i=0; i<tracks.size(); i++) {
+                TrackResponseDto track = tracks.get(i);
                 String fileName = folderPath + "/" + ("A".repeat(i+1)) + ".wav";
                 String audioLink = track.getAudioLink();
 
@@ -96,20 +98,14 @@ public class TapeService {
 
             tape.updateAudioLink(uploadFile.getName(), audioLink);
             tapeRepository.save(tape);
-            awsS3Service.removeNewFile(folder);
-
-            String fileName = dirName + "/" + tape.getFileName();
-            String type = fileName.substring(fileName.lastIndexOf("."));
-            String downName = URLEncoder.encode(tape.getMember().getName() + "'s Tape" + type, "UTF-8").replaceAll("\\+", "%20");;
-
-            return awsS3Service.download(fileName, downName);
-        } else {
-            String fileName = dirName + "/" + tape.getFileName();
-            String type = fileName.substring(fileName.lastIndexOf("."));
-            String downName = URLEncoder.encode(tape.getMember().getName() + "'s Tape" + type, "UTF-8").replaceAll("\\+", "%20");;
-
-            return awsS3Service.download(fileName, downName);
+            RemoveFileUtils.removeFile(folder);
         }
+
+        String fileName = dirName + "/" + tape.getFileName();
+        String type = fileName.substring(fileName.lastIndexOf("."));
+        String downName = URLEncoder.encode(tape.getMember().getName() + "'s Tape" + type, "UTF-8").replaceAll("\\+", "%20");;
+
+        return awsS3Service.download(fileName, downName);
     }
 
     private String mergeTrack(String folderPath, Long tapeId) {
@@ -131,15 +127,15 @@ public class TapeService {
             }
 
             for(int i=1; i<fileList.length; i++) {
-                if(i==1) {
+                if(i == FIRST_BASE_FILE_INDEX) {
                     AudioInputStream appendedFiles =
                             new AudioInputStream(
                                     new SequenceInputStream(clip[i-1], clip[i]),
                                     clip[i].getFormat(),clip[i-1].getFrameLength() + clip[i].getFrameLength());
 
                     AudioSystem.write(appendedFiles, AudioFileFormat.Type.WAVE, new File(folderPath + "/Tape_Ver_" + i + ".wav"));
-                    awsS3Service.removeNewFile(fileList[i-1]);
-                    awsS3Service.removeNewFile(fileList[i]);
+                    RemoveFileUtils.removeFile(fileList[i-1]);
+                    RemoveFileUtils.removeFile(fileList[i]);
                 } else {
                     AudioInputStream saveClip = AudioSystem.getAudioInputStream(new File(folderPath + "/Tape_Ver_" + (i-1) + ".wav"));
 
@@ -153,8 +149,8 @@ public class TapeService {
                     } else {
                         AudioSystem.write(appendedFiles, AudioFileFormat.Type.WAVE, new File(folderPath + "/Tape_Ver_" + i + ".wav"));
                     }
-                    awsS3Service.removeNewFile(fileList[i]);
-                    awsS3Service.removeNewFile(new File(folderPath + "/Tape_Ver_" + (i-1) + ".wav"));
+                    RemoveFileUtils.removeFile(fileList[i]);
+                    RemoveFileUtils.removeFile(new File(folderPath + "/Tape_Ver_" + (i-1) + ".wav"));
                 }
             }
 
@@ -164,4 +160,9 @@ public class TapeService {
 
         return tapeLink;
     }
+
+    private void mergeTrackFiles() {
+
+    }
+
 }

@@ -12,6 +12,7 @@ import com.playlist.cassette.handler.exception.ExceptionCode;
 import com.playlist.cassette.handler.exception.UserException;
 import com.playlist.cassette.repository.TapeRepository;
 import com.playlist.cassette.repository.TrackRepository;
+import com.playlist.cassette.utils.RemoveFileUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +42,7 @@ public class AwsS3Service {
     public String upload(File uploadFile, String dirName) {
         String fileName = dirName + "/" + uploadFile.getName();
         String uploadFileUrl = putS3(uploadFile, fileName);
-        removeNewFile(uploadFile);
+        log.info(RemoveFileUtils.removeFile(uploadFile));
         return uploadFileUrl;
     }
 
@@ -64,11 +65,4 @@ public class AwsS3Service {
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
-    public void removeNewFile(File targetFile) {
-        if (targetFile.delete()) {
-            log.info(targetFile.getName() + " 파일이 삭제되었습니다.");
-        } else {
-            log.info(targetFile.getName() + " 파일이 삭제되지 못했습니다.");
-        }
-    }
 }
