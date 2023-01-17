@@ -10,18 +10,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TapeUpdateRequestDto {
     private String colorCode;
-    private String name;
+    private String title;
 
     @Builder
-    public TapeUpdateRequestDto(String colorCode, String name) {
+    public TapeUpdateRequestDto(String colorCode, String title) {
         this.colorCode = colorCode;
-        this.name = name;
+        this.title = title;
     }
 
     public Tape toEntity() {
         return Tape.builder()
                 .colorCode(colorCode)
-                .name(name)
+                .title(title)
                 .build();
     }
 }

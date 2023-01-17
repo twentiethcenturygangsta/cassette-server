@@ -69,7 +69,7 @@ public class TrackService {
 
         String fileName = dirName + "/" + track.getFileName();
         String type = fileName.substring(fileName.lastIndexOf("."));
-        String downName = URLEncoder.encode(track.getSenderName() + "'s Tape" + type, "UTF-8").replaceAll("\\+", "%20");;
+        String downName = URLEncoder.encode(track.getName() + "'s Tape" + type, "UTF-8").replaceAll("\\+", "%20");;
 
         return awsS3Service.download(fileName, downName);
     }

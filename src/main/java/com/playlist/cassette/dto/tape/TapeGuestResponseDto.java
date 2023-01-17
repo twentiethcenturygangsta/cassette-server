@@ -8,23 +8,16 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TapeResponseDto {
-    private Long tapeId;
+public class TapeGuestResponseDto {
+
     private String colorCode;
     private String title;
     private String name;
-    private String tapeLink;
-    private String fileName;
-    private String audioLink;
 
     @Builder
-    public TapeResponseDto(Tape tape) {
-        this.tapeId = tape.getId();
+    public TapeGuestResponseDto(Tape tape) {
         this.colorCode = tape.getColorCode();
         this.title = tape.getTitle();
         this.name = tape.getName();
-        this.tapeLink = tape.getTapeLink();
-        this.fileName = tape.getFileName();
-        this.audioLink = tape.getAudioLink();
     }
 }

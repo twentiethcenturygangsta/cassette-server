@@ -14,7 +14,9 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TapeListResponseDto {
+    private Long id;
     private String colorCode;
+    private String title;
     private String name;
     private String tapeLink;
     private String fileName;
@@ -22,7 +24,9 @@ public class TapeListResponseDto {
     private List<TrackResponseDto> tracks;
 
     public TapeListResponseDto(Tape tape) {
+        this.id = tape.getId();
         this.colorCode = tape.getColorCode();
+        this.title = tape.getTitle();
         this.name = tape.getName();
         this.tapeLink = tape.getTapeLink();
         this.fileName = tape.getFileName();

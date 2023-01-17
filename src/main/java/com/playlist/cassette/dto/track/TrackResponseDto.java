@@ -12,8 +12,8 @@ public class TrackResponseDto {
     private Long trackId;
     private Long tapeId;
     private String colorCode;
+    private String title;
     private String name;
-    private String senderName;
     private String fileName;
     private String audioLink;
 
@@ -22,8 +22,8 @@ public class TrackResponseDto {
         this.trackId = track.getId();
         this.tapeId = track.getTape().getId();
         this.colorCode = track.getColorCode();
+        this.title = track.getTitle();
         this.name = track.getName();
-        this.senderName = track.getSenderName();
         this.fileName = track.getFileName();
         this.audioLink = track.getAudioLink();
     }

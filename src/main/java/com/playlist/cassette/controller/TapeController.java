@@ -1,9 +1,6 @@
 package com.playlist.cassette.controller;
 
-import com.playlist.cassette.dto.tape.TapeListResponseDto;
-import com.playlist.cassette.dto.tape.TapeResponseDto;
-import com.playlist.cassette.dto.tape.TapeSaveRequestDto;
-import com.playlist.cassette.dto.tape.TapeUpdateRequestDto;
+import com.playlist.cassette.dto.tape.*;
 import com.playlist.cassette.handler.response.ResponseHandler;
 import com.playlist.cassette.service.TapeService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +28,7 @@ public class TapeController {
 
     @GetMapping("/{uuid}")
     public ResponseEntity<Object> getTape(@PathVariable("uuid") String tapeLink) {
-        TapeResponseDto tape = tapeService.getTape(tapeLink);
+        TapeGuestResponseDto tape = tapeService.getTape(tapeLink);
         return ResponseHandler.generateResponse(HttpStatus.OK, tape);
     }
 

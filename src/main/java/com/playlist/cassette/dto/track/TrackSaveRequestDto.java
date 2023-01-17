@@ -9,23 +9,23 @@ import lombok.*;
 public class TrackSaveRequestDto {
     private String uuid;
     private String colorCode;
+    private String title;
     private String name;
-    private String senderName;
 
     @Builder
-    public TrackSaveRequestDto(String uuid, String colorCode, String name, String senderName) {
+    public TrackSaveRequestDto(String uuid, String colorCode, String title, String name) {
         this.uuid = uuid;
         this.colorCode = colorCode;
+        this.title = title;
         this.name = name;
-        this.senderName = senderName;
     }
 
     public Track toEntity(Tape tape) {
         return Track.builder()
                 .tape(tape)
                 .colorCode(colorCode)
+                .title(title)
                 .name(name)
-                .senderName(senderName)
                 .build();
     }
 }

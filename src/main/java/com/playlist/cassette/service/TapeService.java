@@ -1,9 +1,6 @@
 package com.playlist.cassette.service;
 
-import com.playlist.cassette.dto.tape.TapeListResponseDto;
-import com.playlist.cassette.dto.tape.TapeResponseDto;
-import com.playlist.cassette.dto.tape.TapeSaveRequestDto;
-import com.playlist.cassette.dto.tape.TapeUpdateRequestDto;
+import com.playlist.cassette.dto.tape.*;
 import com.playlist.cassette.dto.track.TrackResponseDto;
 import com.playlist.cassette.entity.Member;
 import com.playlist.cassette.entity.Tape;
@@ -48,14 +45,14 @@ public class TapeService {
     public List<TapeListResponseDto> getTapes(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() ->
                 new UserException(ExceptionCode.INVALID_MEMBER, ExceptionCode.INVALID_MEMBER.getMessage()));
-        return tapeRepository.findTapeByMember(member).stream().map(TapeListResponseDto::new).collect(Collectors.toList());
+        return tapeRepository.findTapesByMember(member).stream().map(TapeListResponseDto::new).collect(Collectors.toList());
     }
 
-    public TapeResponseDto getTape(String tapeLink) {
+    public TapeGuestResponseDto getTape(String tapeLink) {
         Tape tape = tapeRepository.findByTapeLink(tapeLink).orElseThrow(() ->
                 new UserException(ExceptionCode.NOT_FOUND_TAPES, ExceptionCode.NOT_FOUND_TAPES.getMessage()));
 
-        return TapeResponseDto.builder().tape(tape).build();
+        return TapeGuestResponseDto.builder().tape(tape).build();
     }
 
     public TapeResponseDto createTape(Long memberId, TapeSaveRequestDto requestDto) {
@@ -70,7 +67,7 @@ public class TapeService {
         Tape tape = tapeRepository.findById(tapeId).orElseThrow(() ->
                 new UserException(ExceptionCode.NOT_FOUND_TAPES, ExceptionCode.NOT_FOUND_TAPES.getMessage()));
 
-        tape.update(requestDto.getColorCode(), requestDto.getName());
+        tape.update(requestDto.getColorCode(), requestDto.getTitle());
         tapeRepository.save(tape);
 
         return TapeResponseDto.builder().tape(tape).build();

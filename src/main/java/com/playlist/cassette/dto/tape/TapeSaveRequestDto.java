@@ -11,11 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TapeSaveRequestDto {
     private String colorCode;
+    private String title;
     private String name;
 
     @Builder
-    public TapeSaveRequestDto(String colorCode, String name) {
+    public TapeSaveRequestDto(String colorCode, String title, String name) {
         this.colorCode = colorCode;
+        this.title = title;
         this.name = name;
     }
 
@@ -23,6 +25,7 @@ public class TapeSaveRequestDto {
         return Tape.builder()
                 .member(member)
                 .colorCode(colorCode)
+                .title(title)
                 .name(name)
                 .build();
     }

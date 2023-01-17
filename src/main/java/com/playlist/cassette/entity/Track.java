@@ -16,17 +16,17 @@ public class Track extends BaseAuditEntity {
     @JoinColumn(name = "tape_id")
     private Tape tape;
     private String colorCode;
+    private String title;
     private String name;
-    private String senderName;
     private String fileName;
     private String audioLink;
 
     @Builder
-    public Track(Tape tape, String colorCode, String name, String senderName, String fileName, String audioLink) {
+    public Track(Tape tape, String colorCode, String title, String name, String fileName, String audioLink) {
         this.tape = tape;
         this.colorCode = colorCode;
+        this.title = title;
         this.name = name;
-        this.senderName = senderName;
         this.fileName = fileName;
         this.audioLink = audioLink;
     }

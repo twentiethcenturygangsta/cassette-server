@@ -27,16 +27,19 @@ public class Tape extends BaseAuditEntity {
 
     @OneToMany(mappedBy = "tape", cascade = CascadeType.ALL)
     private List<Track> tracks = new ArrayList<>();
+
     private String colorCode;
+    private String title;
     private String name;
     private String tapeLink;
     private String fileName;
     private String audioLink;
 
     @Builder
-    public Tape(Member member, String colorCode, String name, String fileName, String audioLink) {
+    public Tape(Member member, String colorCode, String title, String name, String fileName, String audioLink) {
         this.member = member;
         this.colorCode = colorCode;
+        this.title = title;
         this.name = name;
         this.tapeLink = RandomStringUtils.getRandomString(TAPE_LINK_LENGTH);
         this.fileName = fileName;
