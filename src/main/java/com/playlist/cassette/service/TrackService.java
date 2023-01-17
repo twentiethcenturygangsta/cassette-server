@@ -1,8 +1,5 @@
 package com.playlist.cassette.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.*;
-import com.amazonaws.util.IOUtils;
 
 import com.playlist.cassette.dto.track.TrackResponseDto;
 import com.playlist.cassette.dto.track.TrackSaveRequestDto;
@@ -15,10 +12,7 @@ import com.playlist.cassette.repository.TrackRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +28,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class TrackService {
-
+    private final int MAXIMUM_SIZE_OF_TRACKS_PER_TAPE = 12;
     private final AwsS3Service awsS3Service;
     private final TapeRepository tapeRepository;
     private final TrackRepository trackRepository;
@@ -48,8 +42,12 @@ public class TrackService {
 
     @Transactional
     public TrackResponseDto createTrack(TrackSaveRequestDto requestDto, MultipartFile multipartFile, String dirName) throws IOException {
-        Tape tape = tapeRepository.findById(requestDto.getTapeId()).orElseThrow(() ->
+        Tape tape = tapeRepository.findByTapeLink(requestDto.getUuid()).orElseThrow(() ->
                 new UserException(ExceptionCode.NOT_FOUND_TAPES, ExceptionCode.NOT_FOUND_TAPES.getMessage()));
+
+        if (is_exceed_track(tape)) {
+            throw new UserException(ExceptionCode.NUMBER_OF_TRACKS_PER_TAPE_EXCEEDS_12, ExceptionCode.NUMBER_OF_TRACKS_PER_TAPE_EXCEEDS_12.getMessage());
+        }
         Track track = trackRepository.save(requestDto.toEntity(tape));
 
         String type = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
@@ -86,6 +84,10 @@ public class TrackService {
         }
 
         return Optional.empty();
+    }
+
+    private boolean is_exceed_track(Tape tape) {
+        return tape.getTracks().size() >= MAXIMUM_SIZE_OF_TRACKS_PER_TAPE;
     }
 
 }
