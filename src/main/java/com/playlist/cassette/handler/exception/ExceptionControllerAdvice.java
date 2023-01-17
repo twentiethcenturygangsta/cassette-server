@@ -19,9 +19,11 @@ public class ExceptionControllerAdvice {
         String timestamp = String.valueOf(LocalDateTime.now());
 
         List<Object> elements = Arrays.asList(e.getBindingResult().getFieldErrors().get(0).getArguments());
-        ;
+
         Error errorResult = new Error(
-                timestamp, ((ExceptionCode) elements.get(1)).getCode(), ((ExceptionCode) elements.get(1)).getMessage());
+                timestamp,
+                ((ExceptionCode) elements.get(1)).getCode(),
+                ((ExceptionCode) elements.get(1)).getMessage());
         return new ResponseEntity<>(errorResult, e.getStatusCode());
     }
 
