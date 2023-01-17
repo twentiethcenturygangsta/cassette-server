@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface TapeRepository extends JpaRepository<Tape, Long> {
     Optional<Tape> findTapeByMember(Member member);
+    Optional<Tape> findByTapeLink(String tapeLink);
 }

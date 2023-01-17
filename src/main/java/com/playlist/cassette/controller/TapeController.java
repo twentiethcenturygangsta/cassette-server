@@ -29,6 +29,12 @@ public class TapeController {
         return ResponseHandler.generateResponse(HttpStatus.OK, tape);
     }
 
+    @GetMapping("/{uuid}")
+    public ResponseEntity<Object> getTape(@PathVariable("uuid") String tapeLink) {
+        TapeResponseDto tape = tapeService.getTape(tapeLink);
+        return ResponseHandler.generateResponse(HttpStatus.OK, tape);
+    }
+
     @PostMapping
     public ResponseEntity<Object> createTape(@RequestBody TapeSaveRequestDto requestDto, Principal principal) {
         Long memberId = Long.valueOf(principal.getName());

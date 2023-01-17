@@ -51,6 +51,13 @@ public class TapeService {
         return tapeRepository.findTapeByMember(member).stream().map(TapeListResponseDto::new).collect(Collectors.toList());
     }
 
+    public TapeResponseDto getTape(String tapeLink) {
+        Tape tape = tapeRepository.findByTapeLink(tapeLink).orElseThrow(() ->
+                new UserException(ExceptionCode.NOT_FOUND_TAPES, ExceptionCode.NOT_FOUND_TAPES.getMessage()));
+
+        return TapeResponseDto.builder().tape(tape).build();
+    }
+
     public TapeResponseDto createTape(Long memberId, TapeSaveRequestDto requestDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(() ->
                 new UserException(ExceptionCode.INVALID_MEMBER, ExceptionCode.INVALID_MEMBER.getMessage()));
