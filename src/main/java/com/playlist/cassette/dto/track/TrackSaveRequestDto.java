@@ -7,14 +7,14 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TrackSaveRequestDto {
-    private Long tapeId;
+    private String uuid;
     private String colorCode;
     private String name;
     private String senderName;
 
     @Builder
-    public TrackSaveRequestDto(Long tapeId, String colorCode, String name, String senderName) {
-        this.tapeId = tapeId;
+    public TrackSaveRequestDto(String uuid, String colorCode, String name, String senderName) {
+        this.uuid = uuid;
         this.colorCode = colorCode;
         this.name = name;
         this.senderName = senderName;
