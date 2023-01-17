@@ -30,14 +30,16 @@ public class Tape extends BaseAuditEntity {
     private String colorCode;
     private String name;
     private String tapeLink;
+    private String fileName;
     private String audioLink;
 
     @Builder
-    public Tape(Member member, String colorCode, String name, String audioLink) {
+    public Tape(Member member, String colorCode, String name, String fileName, String audioLink) {
         this.member = member;
         this.colorCode = colorCode;
         this.name = name;
         this.tapeLink = RandomStringUtils.getRandomString(TAPE_LINK_LENGTH);
+        this.fileName = fileName;
         this.audioLink = audioLink;
     }
 
@@ -46,7 +48,8 @@ public class Tape extends BaseAuditEntity {
         this.name = name;
     }
 
-    public void updateAudioLink(String audioLink) {
+    public void updateAudioLink(String fileName, String audioLink) {
+        this.fileName = fileName;
         this.audioLink = audioLink;
     }
 }

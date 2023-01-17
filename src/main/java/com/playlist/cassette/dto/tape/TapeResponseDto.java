@@ -13,6 +13,7 @@ public class TapeResponseDto {
     private String colorCode;
     private String name;
     private String tapeLink;
+    private String fileName;
     private String audioLink;
 
     @Builder
@@ -21,6 +22,7 @@ public class TapeResponseDto {
         this.colorCode = tape.getColorCode();
         this.name = tape.getName();
         this.tapeLink = tape.getTapeLink();
+        this.fileName = tape.getFileName();
         this.audioLink = tape.getAudioLink();
     }
 }
