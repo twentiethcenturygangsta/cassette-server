@@ -12,6 +12,7 @@ public enum ExceptionCode {
     INVALID_SOCIAL_LOGIN_MEMBER(HttpStatus.BAD_REQUEST, "INVALID_SOCIAL_LOGIN_MEMBER", "멤버의 소셜로그인 타입이 존재하지 않습니다."),
     NOT_FOUND_TAPES(HttpStatus.NOT_FOUND, "NOT_FOUND_TAPES", "테이프가 존재하지 않습니다."),
     NOT_FOUND_TRACKS(HttpStatus.NOT_FOUND, "NOT_FOUND_TRACKS", "트랙이 존재하지 않습니다."),
+    NUMBER_OF_TRACKS_PER_TAPE_EXCEEDS_12(HttpStatus.BAD_REQUEST, "NUMBER_OF_TRACKS_PER_TAPE_EXCEEDS_12", "테이프당 허용되는 트랙의 갯수가 초과되었습니다."),
     NOT_INVALID_FILE_FORMAT(HttpStatus.BAD_REQUEST, "NOT_INVALID_FILE_FORMAT", "S3 파일 업로드에 문제가 발생했습니다."),
 
     // Auth Exception
