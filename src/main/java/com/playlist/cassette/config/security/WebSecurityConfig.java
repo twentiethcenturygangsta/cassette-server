@@ -29,7 +29,14 @@ public class WebSecurityConfig {
             "/webjars/**",
             "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/callback"
+            "/callback",
+            "/api/v1/track"
+    };
+    private static final String[] AUTH_CONFIRM_LIST = {
+            "/api/v1/track/{id}",
+            "/api/v1/track/download/{id}",
+            "/api/v1/member/**",
+            "/api/v1/tape/**"
     };
 
     @Bean
@@ -39,8 +46,8 @@ public class WebSecurityConfig {
         return http
                 .cors().and()
                 .csrf().disable() //csrf
-                .exceptionHandling().
-                authenticationEntryPoint(jwtAuthenticationEntryPoint).and()// 예외처리
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint).and()// 예외처리
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -49,9 +56,9 @@ public class WebSecurityConfig {
                         UsernamePasswordAuthenticationFilter.class
                 )
                 .authorizeHttpRequests()
+                .requestMatchers(AUTH_CONFIRM_LIST).authenticated()
                 .requestMatchers(AUTH_WHITELIST).permitAll()
-                .requestMatchers("/api/v1/**").authenticated()
-                .anyRequest().authenticated().and()
+                .and()
                 .build(); // 권한 설정
     }
 }
