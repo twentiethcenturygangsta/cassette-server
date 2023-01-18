@@ -28,7 +28,10 @@ public class KakaoLoginController {
     private final AuthService authService;
 
     @GetMapping("/callback")
-    public ResponseEntity<Object> getSocialLogin(@RequestParam("code") String code, HttpServletResponse response) throws URISyntaxException {
+    public ResponseEntity<Object> getSocialLogin(
+            @RequestParam("code") String code,
+            HttpServletResponse response
+    ) throws URISyntaxException {
         Member kakaoMember = kakaoLoginService.createMember(code);
         Member member = memberService.createMember(kakaoMember);
         LoginResponseDto loginResponseDto = authService.createLoginMember(member, response);

@@ -27,7 +27,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private static final long REFRESH_TOKEN_EXPIRATION_TIME_GAP = 604800000;
+    private static final long REFRESH_TOKEN_EXPIRATION_TIME_GAP = 604800000;  // 1week
+//    private static final long REFRESH_TOKEN_EXPIRATION_TIME_GAP = 70000;  // 50 seconds
+
     private static final String REFRESH_TOKEN_SECURE_MESSAGE = "HTTP_ONLY";
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
@@ -58,7 +60,7 @@ public class AuthService {
                 .build();
     }
 
-    public JwtTokenDto refreshToken(String token) {
+    public JwtTokenDto refreshToken(String token, HttpServletResponse response) {
         String refreshToken = token.substring(7);
         JwtValidationType jwtValidationType = jwtTokenProvider.validateToken(refreshToken);
         String accessToken = "";
@@ -69,6 +71,8 @@ public class AuthService {
             if (isExpiredRefreshToken(member)) {
                 TokenDto newRefreshToken = jwtTokenProvider.generateRefreshToken(authentication);
                 member.updateRefreshToken(newRefreshToken);
+                memberRepository.save(member);
+                setCookieWithRefreshToken(response, newRefreshToken);
             }
         }
         return JwtTokenDto.builder()
@@ -88,10 +92,11 @@ public class AuthService {
 
     private boolean isExpiredRefreshToken(Member member) {
         Date today = new Date();
-        return (today.getTime() - member.getRefreshTokenExpireTime().getTime()) / 1000 > REFRESH_TOKEN_EXPIRATION_TIME_GAP;
+        return (member.getRefreshTokenExpireTime().getTime() - today.getTime()) < REFRESH_TOKEN_EXPIRATION_TIME_GAP;
     }
 
     private void setCookieWithRefreshToken(HttpServletResponse response, TokenDto refreshToken) {
+
         Cookie cookie = new Cookie("refreshToken", refreshToken.getValue());
         cookie.setMaxAge(14*24*60*60);
         cookie.setSecure(true);
