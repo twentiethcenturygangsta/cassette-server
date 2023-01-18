@@ -3,6 +3,7 @@ package com.playlist.cassette.handler.exception;
 import com.playlist.cassette.handler.response.Error;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -32,5 +33,18 @@ public class ExceptionControllerAdvice {
         String timestamp = String.valueOf(LocalDateTime.now());
         Error errorResult = new Error(timestamp, "INTERNAL_SERVER_ERROR", e.getMessage());
         return new ResponseEntity<>(errorResult, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Error> bindExceptionHandle(BindException e) {
+        String timestamp = String.valueOf(LocalDateTime.now());
+
+        List<Object> elements = Arrays.asList(e.getBindingResult().getFieldErrors().get(0).getArguments());
+
+        Error errorResult = new Error(
+                timestamp,
+                ((ExceptionCode) elements.get(1)).getCode(),
+                ((ExceptionCode) elements.get(1)).getMessage());
+        return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
     }
 }
