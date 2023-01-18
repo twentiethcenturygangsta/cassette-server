@@ -3,6 +3,7 @@ package com.playlist.cassette.controller;
 import com.playlist.cassette.dto.tape.*;
 import com.playlist.cassette.handler.response.ResponseHandler;
 import com.playlist.cassette.service.TapeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class TapeController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createTape(@RequestBody TapeSaveRequestDto requestDto, Principal principal) {
+    public ResponseEntity<Object> createTape(@RequestBody @Valid TapeSaveRequestDto requestDto, Principal principal) {
         Long memberId = Long.valueOf(principal.getName());
         TapeResponseDto tape = tapeService.createTape(memberId, requestDto);
 
