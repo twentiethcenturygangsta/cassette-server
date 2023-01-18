@@ -11,6 +11,8 @@ import com.playlist.cassette.entity.Member;
 import com.playlist.cassette.handler.exception.ExceptionCode;
 import com.playlist.cassette.handler.exception.UserException;
 import com.playlist.cassette.repository.MemberRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -25,11 +27,12 @@ import java.util.stream.Collectors;
 public class AuthService {
 
     private static final long REFRESH_TOKEN_EXPIRATION_TIME_GAP = 604800000;
+    private static final String REFRESH_TOKEN_SECURE_MESSAGE = "HTTP_ONLY";
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
-    public LoginResponseDto createLoginMember(Member member) {
+    public LoginResponseDto createLoginMember(Member member, HttpServletResponse response) {
         Authentication authentication = new UserAuthentication(member.getId(), null, null);
         String accessToken = jwtTokenProvider.generateAccessToken(authentication);
         String refreshToken = jwtTokenProvider.generateRefreshToken(authentication);
@@ -37,9 +40,11 @@ public class AuthService {
         member.updateRefreshToken(refreshToken);
         memberRepository.save(member);
 
+        setCookieWithRefreshToken(response, refreshToken);
+
         JwtTokenDto jwtTokenDto = JwtTokenDto.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                .refreshToken(REFRESH_TOKEN_SECURE_MESSAGE)
                 .build();
         MemberResponseDto memberResponseDto = MemberResponseDto.builder()
                 .member(member)
@@ -82,6 +87,16 @@ public class AuthService {
     private boolean isExpiredRefreshToken(Member member) {
         Date today = new Date();
         return (today.getTime() - member.getRefreshTokenExpireTime().getTime()) / 1000 > REFRESH_TOKEN_EXPIRATION_TIME_GAP;
+    }
+
+    private void setCookieWithRefreshToken(HttpServletResponse response, String refreshToken) {
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setMaxAge(14*24*60*60);
+        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
     }
 }
 
