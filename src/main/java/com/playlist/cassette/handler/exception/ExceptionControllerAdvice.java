@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.net.BindException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +26,19 @@ public class ExceptionControllerAdvice {
                 ((ExceptionCode) elements.get(1)).getCode(),
                 ((ExceptionCode) elements.get(1)).getMessage());
         return new ResponseEntity<>(errorResult, e.getStatusCode());
+    }
+
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<Error> badRequestFormDataExceptionHandle(BindException e) {
+        String timestamp = String.valueOf(LocalDateTime.now());
+
+        List<Object> elements = Arrays.asList();
+
+        Error errorResult = new Error(
+                timestamp,
+                ((ExceptionCode) elements.get(1)).getCode(),
+                ((ExceptionCode) elements.get(1)).getMessage());
+        return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
