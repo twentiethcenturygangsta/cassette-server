@@ -4,6 +4,7 @@ import com.playlist.cassette.dto.track.TrackResponseDto;
 import com.playlist.cassette.dto.track.TrackSaveRequestDto;
 import com.playlist.cassette.handler.response.ResponseHandler;
 import com.playlist.cassette.service.TrackService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class TrackController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createTrack(TrackSaveRequestDto requestDto,
+    public ResponseEntity<Object> createTrack(@Valid TrackSaveRequestDto requestDto,
                                               @RequestParam("data") MultipartFile multipartFile) throws IOException {
         TrackResponseDto track = trackService.createTrack(requestDto, multipartFile, "audio");
 

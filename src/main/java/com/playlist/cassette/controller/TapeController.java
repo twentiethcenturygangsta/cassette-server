@@ -43,7 +43,7 @@ public class TapeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateTape(@PathVariable("id") String id,
-                                             @RequestBody TapeUpdateRequestDto requestDto) {
+                                             @RequestBody @Valid TapeUpdateRequestDto requestDto) {
         Long tapeId = Long.valueOf(id);
         TapeResponseDto tape = tapeService.updateTape(tapeId, requestDto);
         return ResponseHandler.generateResponse(HttpStatus.OK, tape);

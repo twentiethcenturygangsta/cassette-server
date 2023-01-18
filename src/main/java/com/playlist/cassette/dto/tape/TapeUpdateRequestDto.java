@@ -1,6 +1,9 @@
 package com.playlist.cassette.dto.tape;
 
+import com.playlist.cassette.annotation.ValidName;
+import com.playlist.cassette.annotation.ValidTitle;
 import com.playlist.cassette.entity.Tape;
+import com.playlist.cassette.handler.exception.ExceptionCode;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,18 +13,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TapeUpdateRequestDto {
     private String colorCode;
+    @ValidTitle(exceptionCode = ExceptionCode.NOT_INVALID_TAPE_TITLE)
     private String title;
+    @ValidName(exceptionCode = ExceptionCode.NOT_INVALID_TAPE_NAME)
+    private String name;
 
     @Builder
-    public TapeUpdateRequestDto(String colorCode, String title) {
+    public TapeUpdateRequestDto(String colorCode, String title, String name) {
         this.colorCode = colorCode;
         this.title = title;
+        this.name = name;
     }
 
     public Tape toEntity() {
         return Tape.builder()
                 .colorCode(colorCode)
                 .title(title)
+                .name(name)
                 .build();
     }
 }
