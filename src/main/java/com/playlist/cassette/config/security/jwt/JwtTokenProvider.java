@@ -1,7 +1,6 @@
 package com.playlist.cassette.config.security.jwt;
 
-import com.playlist.cassette.handler.exception.ExceptionCode;
-import com.playlist.cassette.handler.exception.UserException;
+import com.playlist.cassette.dto.auth.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -21,26 +20,40 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    private static final int ACCESS_TOKEN_EXPIRATION_TIME = 7200000; // 2 hour
-    private static final int REFRESH_TOKEN_EXPIRATION_TIME = 1209600000; // 14 * 24 * 60 * 60 * 1000 = 2 weeks
+//    private static final int ACCESS_TOKEN_EXPIRATION_TIME = 7200000; // 2 hour
+    private static final int ACCESS_TOKEN_EXPIRATION_TIME = 20000; // 2 hour
+
+    //    private static final int REFRESH_TOKEN_EXPIRATION_TIME = 1209600000; // 14 * 24 * 60 * 60 * 1000 = 2 weeks
+    private static final int REFRESH_TOKEN_EXPIRATION_TIME = 20000 * 10; // 100 seconds
+
     private final Environment env;
 
-    public String generateAccessToken(Authentication authentication) {
-        return Jwts.builder()
+    public TokenDto generateAccessToken(Authentication authentication) {
+        Date expiredTime = getExpirationDate(ACCESS_TOKEN_EXPIRATION_TIME);
+        String token = Jwts.builder()
                 .setSubject(String.valueOf(authentication.getPrincipal()))
                 .setIssuedAt(new Date())
-                .setExpiration(getExpirationDate(ACCESS_TOKEN_EXPIRATION_TIME))
+                .setExpiration(expiredTime)
                 .signWith(getJwtSecretKey(), SignatureAlgorithm.HS512)
                 .compact();
+        return TokenDto.builder()
+                .value(token)
+                .expiredTime(expiredTime)
+                .build();
     }
 
-    public String generateRefreshToken(Authentication authentication) {
-        return Jwts.builder()
+    public TokenDto generateRefreshToken(Authentication authentication) {
+        Date expiredTime = getExpirationDate(REFRESH_TOKEN_EXPIRATION_TIME);
+        String token = Jwts.builder()
                 .setSubject(String.valueOf(authentication.getPrincipal()))
                 .setIssuedAt(new Date())
                 .setExpiration(getExpirationDate(REFRESH_TOKEN_EXPIRATION_TIME))
                 .signWith(getJwtSecretKey(), SignatureAlgorithm.HS512)
                 .compact();
+        return TokenDto.builder()
+                .value(token)
+                .expiredTime(expiredTime)
+                .build();
     }
 
     public Long getUserFromJwt(String token) {
