@@ -1,5 +1,6 @@
 package com.playlist.cassette.dto.tape;
 
+import com.playlist.cassette.annotation.ValidName;
 import com.playlist.cassette.annotation.ValidTitle;
 import com.playlist.cassette.entity.Member;
 import com.playlist.cassette.entity.Tape;
@@ -15,6 +16,7 @@ public class TapeSaveRequestDto {
     private String colorCode;
     @ValidTitle(exceptionCode = ExceptionCode.NOT_INVALID_TAPE_TITLE)
     private String title;
+    @ValidName(exceptionCode = ExceptionCode.NOT_INVALID_TAPE_NAME)
     private String name;
 
     @Builder

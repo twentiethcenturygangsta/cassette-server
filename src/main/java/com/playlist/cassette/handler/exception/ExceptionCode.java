@@ -14,7 +14,8 @@ public enum ExceptionCode {
     NOT_FOUND_TRACKS(HttpStatus.NOT_FOUND, "NOT_FOUND_TRACKS", "트랙이 존재하지 않습니다."),
     NUMBER_OF_TRACKS_PER_TAPE_EXCEEDS_12(HttpStatus.BAD_REQUEST, "NUMBER_OF_TRACKS_PER_TAPE_EXCEEDS_12", "테이프당 허용되는 트랙의 갯수가 초과되었습니다."),
     NOT_INVALID_FILE_FORMAT(HttpStatus.BAD_REQUEST, "NOT_INVALID_FILE_FORMAT", "S3 파일 업로드에 문제가 발생했습니다."),
-    NOT_INVALID_TAPE_TITLE(HttpStatus.BAD_REQUEST, "NOT_INVALID_TAPE_TITLE", "테이프의 이름은 1~16자의 제목으로 입력해주세요."),
+    NOT_INVALID_TAPE_TITLE(HttpStatus.BAD_REQUEST, "NOT_INVALID_TAPE_TITLE", "테이프의 제목은 1~16자의 제목으로 입력해주세요."),
+    NOT_INVALID_TAPE_NAME(HttpStatus.BAD_REQUEST, "NOT_INVALID_TAPE_NAME", "테이프의 닉네임은 1~5자의 닉네임으로 입력해주세요."),
 
     // Auth Exception
     EXPIRED_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "EXPIRED_JWT_TOKEN", "만료된 토큰입니다."),
