@@ -10,7 +10,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TrackSaveRequestDto {
-    private String uuid;
+    private String tapeLink;
     private String colorCode;
     @ValidTitle(exceptionCode = ExceptionCode.NOT_INVALID_TAPE_TITLE)
     private String title;
@@ -18,8 +18,8 @@ public class TrackSaveRequestDto {
     private String name;
 
     @Builder
-    public TrackSaveRequestDto(String uuid, String colorCode, String title, String name) {
-        this.uuid = uuid;
+    public TrackSaveRequestDto(String tapeLink, String colorCode, String title, String name) {
+        this.tapeLink = tapeLink;
         this.colorCode = colorCode;
         this.title = title;
         this.name = name;
