@@ -1,5 +1,6 @@
 package com.playlist.cassette.entity;
 
+import com.playlist.cassette.dto.auth.TokenDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -40,8 +41,8 @@ public class Member extends BaseAuditEntity{
         this.kakaoMemberId = kakaoMemberId;
     }
 
-    public void updateRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-        this.refreshTokenExpireTime = new Date();
+    public void updateRefreshToken(TokenDto refreshToken) {
+        this.refreshToken = refreshToken.getValue();
+        this.refreshTokenExpireTime = refreshToken.getExpiredTime();
     }
 }
