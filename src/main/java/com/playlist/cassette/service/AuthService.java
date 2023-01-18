@@ -4,6 +4,7 @@ import com.playlist.cassette.config.security.jwt.JwtTokenProvider;
 import com.playlist.cassette.config.security.jwt.JwtValidationType;
 import com.playlist.cassette.config.security.jwt.UserAuthentication;
 import com.playlist.cassette.dto.auth.JwtTokenDto;
+import com.playlist.cassette.dto.auth.TokenDto;
 import com.playlist.cassette.dto.member.LoginResponseDto;
 import com.playlist.cassette.dto.member.MemberResponseDto;
 import com.playlist.cassette.dto.tape.TapeResponseDto;
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -34,8 +35,8 @@ public class AuthService {
     @Transactional
     public LoginResponseDto createLoginMember(Member member, HttpServletResponse response) {
         Authentication authentication = new UserAuthentication(member.getId(), null, null);
-        String accessToken = jwtTokenProvider.generateAccessToken(authentication);
-        String refreshToken = jwtTokenProvider.generateRefreshToken(authentication);
+        TokenDto accessToken = jwtTokenProvider.generateAccessToken(authentication);
+        TokenDto refreshToken = jwtTokenProvider.generateRefreshToken(authentication);
 
         member.updateRefreshToken(refreshToken);
         memberRepository.save(member);
@@ -43,7 +44,7 @@ public class AuthService {
         setCookieWithRefreshToken(response, refreshToken);
 
         JwtTokenDto jwtTokenDto = JwtTokenDto.builder()
-                .accessToken(accessToken)
+                .accessToken(accessToken.getValue())
                 .refreshToken(REFRESH_TOKEN_SECURE_MESSAGE)
                 .build();
         MemberResponseDto memberResponseDto = MemberResponseDto.builder()
@@ -64,14 +65,15 @@ public class AuthService {
         if (jwtValidationType.equals(JwtValidationType.VALID_JWT)) {
             Member member = isValidMemberWithRefreshTokenInDatabase(refreshToken);
             Authentication authentication = new UserAuthentication(member.getId(), null, null);
-            accessToken = jwtTokenProvider.generateAccessToken(authentication);
+            accessToken = jwtTokenProvider.generateAccessToken(authentication).getValue();
             if (isExpiredRefreshToken(member)) {
-                refreshToken = jwtTokenProvider.generateRefreshToken(authentication);
+                TokenDto newRefreshToken = jwtTokenProvider.generateRefreshToken(authentication);
+                member.updateRefreshToken(newRefreshToken);
             }
         }
         return JwtTokenDto.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                .refreshToken(REFRESH_TOKEN_SECURE_MESSAGE)
                 .build();
     }
 
@@ -89,8 +91,8 @@ public class AuthService {
         return (today.getTime() - member.getRefreshTokenExpireTime().getTime()) / 1000 > REFRESH_TOKEN_EXPIRATION_TIME_GAP;
     }
 
-    private void setCookieWithRefreshToken(HttpServletResponse response, String refreshToken) {
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
+    private void setCookieWithRefreshToken(HttpServletResponse response, TokenDto refreshToken) {
+        Cookie cookie = new Cookie("refreshToken", refreshToken.getValue());
         cookie.setMaxAge(14*24*60*60);
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
