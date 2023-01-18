@@ -14,7 +14,7 @@ spring:
 
 kakao:
   restApiKey:
-  redirectUrl: http://3.34.58.178:8080/callback
+  redirectUrl: http://localhost:3000/kakao/bridge
 
 cloud:
   aws:
