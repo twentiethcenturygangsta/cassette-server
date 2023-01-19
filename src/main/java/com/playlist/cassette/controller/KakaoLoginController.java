@@ -6,6 +6,7 @@ import com.playlist.cassette.handler.response.ResponseHandler;
 import com.playlist.cassette.service.AuthService;
 import com.playlist.cassette.service.KakaoLoginService;
 import com.playlist.cassette.service.MemberService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,10 +31,12 @@ public class KakaoLoginController {
     @GetMapping("/callback")
     public ResponseEntity<Object> getSocialLogin(
             @RequestParam("code") String code,
-            @RequestHeader("env") String applicationEnv) throws URISyntaxException {
+            HttpServletResponse response,
+            @RequestHeader("env") String applicationEnv
+    ) throws URISyntaxException {
         Member kakaoMember = kakaoLoginService.createMember(code, applicationEnv);
         Member member = memberService.createMember(kakaoMember);
-        LoginResponseDto loginResponseDto = authService.createLoginMember(member);
+        LoginResponseDto loginResponseDto = authService.createLoginMember(member, response);
         return ResponseHandler.generateResponse(HttpStatus.OK, loginResponseDto);
     }
 }

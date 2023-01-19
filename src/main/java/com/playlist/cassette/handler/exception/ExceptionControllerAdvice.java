@@ -29,6 +29,13 @@ public class ExceptionControllerAdvice {
     }
 
     @ExceptionHandler
+    public ResponseEntity<Error> UserExceptionHandle(UserException e) {
+        String timestamp = String.valueOf(LocalDateTime.now());
+        Error errorResult = new Error(timestamp, e.getExceptionCode().getCode(), e.getExceptionCode().getMessage());
+        return new ResponseEntity<>(errorResult, e.getExceptionCode().getStatusCode());
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Error> internalServerExceptionHandle(Exception e) {
         String timestamp = String.valueOf(LocalDateTime.now());
         Error errorResult = new Error(timestamp, "INTERNAL_SERVER_ERROR", e.getMessage());

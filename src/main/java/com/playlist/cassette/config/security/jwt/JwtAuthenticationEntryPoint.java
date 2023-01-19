@@ -20,17 +20,20 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, UserException {
+        response.setStatus(HttpServletResponse.SC_OK);
         ExceptionCode exceptionCode = (ExceptionCode)request.getAttribute("exception");
-        if (exceptionCode.equals(ExceptionCode.EMPTY_TOKEN)) {
-            setResponse(response, ExceptionCode.EMPTY_TOKEN);
-        } else if (exceptionCode.equals(ExceptionCode.EXPIRED_JWT_TOKEN)) {
-            setResponse(response, ExceptionCode.EXPIRED_JWT_TOKEN);
-        } else if (exceptionCode.equals(ExceptionCode.INVALID_JWT_SIGNATURE)) {
-            setResponse(response, ExceptionCode.INVALID_JWT_SIGNATURE);
-        } else if (exceptionCode.equals(ExceptionCode.INVALID_JWT_TOKEN)) {
-            setResponse(response, ExceptionCode.INVALID_JWT_TOKEN);
-        } else if (exceptionCode.equals(ExceptionCode.UNSUPPORTED_JWT_TOKEN)) {
-            setResponse(response, ExceptionCode.UNSUPPORTED_JWT_TOKEN);
+        if(exceptionCode != null) {
+            if (exceptionCode.equals(ExceptionCode.EMPTY_TOKEN)) {
+                setResponse(response, ExceptionCode.EMPTY_TOKEN);
+            } else if (exceptionCode.equals(ExceptionCode.EXPIRED_JWT_TOKEN)) {
+                setResponse(response, ExceptionCode.EXPIRED_JWT_TOKEN);
+            } else if (exceptionCode.equals(ExceptionCode.INVALID_JWT_SIGNATURE)) {
+                setResponse(response, ExceptionCode.INVALID_JWT_SIGNATURE);
+            } else if (exceptionCode.equals(ExceptionCode.INVALID_JWT_TOKEN)) {
+                setResponse(response, ExceptionCode.INVALID_JWT_TOKEN);
+            } else if (exceptionCode.equals(ExceptionCode.UNSUPPORTED_JWT_TOKEN)) {
+                setResponse(response, ExceptionCode.UNSUPPORTED_JWT_TOKEN);
+            }
         }
     }
 

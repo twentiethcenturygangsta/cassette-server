@@ -36,7 +36,8 @@ public class WebSecurityConfig {
             "/api/v1/track/{id}",
             "/api/v1/track/download/{id}",
             "/api/v1/member/**",
-            "/api/v1/tape/**"
+            "/api/v1/tape/**",
+            "/api/v1/auth/**"
     };
 
     @Bean
