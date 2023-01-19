@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,8 +28,10 @@ public class KakaoLoginController {
     private final AuthService authService;
 
     @GetMapping("/callback")
-    public ResponseEntity<Object> getSocialLogin(@RequestParam("code") String code) throws URISyntaxException {
-        Member kakaoMember = kakaoLoginService.createMember(code);
+    public ResponseEntity<Object> getSocialLogin(
+            @RequestParam("code") String code,
+            @RequestHeader("env") String applicationEnv) throws URISyntaxException {
+        Member kakaoMember = kakaoLoginService.createMember(code, applicationEnv);
         Member member = memberService.createMember(kakaoMember);
         LoginResponseDto loginResponseDto = authService.createLoginMember(member);
         return ResponseHandler.generateResponse(HttpStatus.OK, loginResponseDto);
