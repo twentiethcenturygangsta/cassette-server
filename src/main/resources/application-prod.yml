@@ -14,7 +14,9 @@ spring:
 
 kakao:
   restApiKey:
-  redirectUrl: http://localhost:3000/kakao/bridge
+  redirectUrlLocalServer: http://localhost:3000/kakao/bridge
+  redirectUrlDevServer: https://ganstatest.12playlist.com/kakao/bridge
+  redirectUrlProdServer : https://12playlist.com/kakao/bridge
 
 cloud:
   aws:
