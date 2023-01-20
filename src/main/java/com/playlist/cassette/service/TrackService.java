@@ -30,6 +30,7 @@ import java.util.Optional;
 public class TrackService {
     private final int MAXIMUM_SIZE_OF_TRACKS_PER_TAPE = 12;
     private final AwsS3Service awsS3Service;
+    private final TapeService tapeService;
     private final TapeRepository tapeRepository;
     private final TrackRepository trackRepository;
 
@@ -60,6 +61,8 @@ public class TrackService {
 
         track.update(fileName, audioLink);
         trackRepository.save(track);
+
+        if(tape.getTracks().size() == MAXIMUM_SIZE_OF_TRACKS_PER_TAPE-1) tapeService.uploadTape(tape, dirName);
 
         return TrackResponseDto.builder().track(track).build();
     }

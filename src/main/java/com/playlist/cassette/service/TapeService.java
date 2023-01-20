@@ -23,6 +23,7 @@ import javax.sound.sampled.AudioSystem;
 import java.io.File;
 import java.io.IOException;
 import java.io.SequenceInputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -77,35 +78,39 @@ public class TapeService {
         Tape tape = tapeRepository.findById(tapeId).orElseThrow(() ->
                 new UserException(ExceptionCode.NOT_FOUND_TAPES, ExceptionCode.NOT_FOUND_TAPES.getMessage()));
 
-        if(tape.getAudioLink() == null) {
-            List<TrackResponseDto> tracks = trackRepository.findTrackByTape(tape).stream().map(TrackResponseDto::new).collect(Collectors.toList());
-
-            String folderPath = "src/main/" + tapeId + "TapeFolder";
-            File folder = new File(folderPath);
-            if(!folder.exists()) folder.mkdir();
-
-            for(int i=0; i<tracks.size(); i++) {
-                TrackResponseDto track = tracks.get(i);
-                String fileName = folderPath + "/" + ("A".repeat(i+1)) + ".wav";
-                String audioLink = track.getAudioLink();
-
-                File trackFile = new File(fileName);
-                FileUtils.copyURLToFile(new URL(audioLink), trackFile);
-            }
-
-            File uploadFile = new File(mergeTrack(folderPath, tape.getId()));
-            String audioLink = awsS3Service.upload(uploadFile, dirName);
-
-            tape.updateAudioLink(uploadFile.getName(), audioLink);
-            tapeRepository.save(tape);
-            RemoveFileUtils.removeFile(folder);
-        }
-
         String fileName = dirName + "/" + tape.getFileName();
         String type = fileName.substring(fileName.lastIndexOf("."));
         String downName = URLEncoder.encode(tape.getMember().getName() + "'s Tape" + type, "UTF-8").replaceAll("\\+", "%20");;
 
         return awsS3Service.download(fileName, downName);
+    }
+
+    public void uploadTape(Tape tape, String dirName) throws IOException {
+        String folderPath = "src/main/" + tape.getId() + "TapeFolder";
+        File folder = new File(folderPath);
+        if(!folder.exists()) folder.mkdir();
+
+        downloadTracks(tape, folderPath);
+
+        File uploadFile = new File(mergeTrack(folderPath, tape.getId()));
+        String audioLink = awsS3Service.upload(uploadFile, dirName);
+
+        tape.updateAudioLink(uploadFile.getName(), audioLink);
+        tapeRepository.save(tape);
+        RemoveFileUtils.removeFile(folder);
+    }
+
+    private void downloadTracks(Tape tape, String folderPath) throws IOException{
+        List<TrackResponseDto> tracks = trackRepository.findTrackByTape(tape).stream().map(TrackResponseDto::new).collect(Collectors.toList());
+
+        for(int i=0; i<tracks.size(); i++) {
+            TrackResponseDto track = tracks.get(i);
+            String fileName = folderPath + "/" + ("A".repeat(i+1)) + ".wav";
+            String audioLink = track.getAudioLink();
+
+            File trackFile = new File(fileName);
+            FileUtils.copyURLToFile(new URL(audioLink), trackFile);
+        }
     }
 
     private String mergeTrack(String folderPath, Long tapeId) {
