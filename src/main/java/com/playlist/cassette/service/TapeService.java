@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 public class TapeService {
 
     private final int FIRST_BASE_FILE_INDEX = 1;
+    private final String MERGE_TAPE_FILE_NAME = "Tape_Ver_";
     private final AwsS3Service awsS3Service;
     private final TapeRepository tapeRepository;
     private final MemberRepository memberRepository;
@@ -138,11 +139,11 @@ public class TapeService {
                                     new SequenceInputStream(clip[i-1], clip[i]),
                                     clip[i].getFormat(),clip[i-1].getFrameLength() + clip[i].getFrameLength());
 
-                    AudioSystem.write(appendedFiles, AudioFileFormat.Type.WAVE, new File(folderPath + "/Tape_Ver_" + i + ".wav"));
+                    AudioSystem.write(appendedFiles, AudioFileFormat.Type.WAVE, new File(folderPath + "/" + MERGE_TAPE_FILE_NAME + i + ".wav"));
                     RemoveFileUtils.removeFile(fileList[i-1]);
                     RemoveFileUtils.removeFile(fileList[i]);
                 } else {
-                    AudioInputStream saveClip = AudioSystem.getAudioInputStream(new File(folderPath + "/Tape_Ver_" + (i-1) + ".wav"));
+                    AudioInputStream saveClip = AudioSystem.getAudioInputStream(new File(folderPath + "/" + MERGE_TAPE_FILE_NAME + (i-1) + ".wav"));
 
                     AudioInputStream appendedFiles =
                             new AudioInputStream(
@@ -152,10 +153,10 @@ public class TapeService {
                     if(i == fileList.length-1) {
                         AudioSystem.write(appendedFiles, AudioFileFormat.Type.WAVE, new File(tapeLink));
                     } else {
-                        AudioSystem.write(appendedFiles, AudioFileFormat.Type.WAVE, new File(folderPath + "/Tape_Ver_" + i + ".wav"));
+                        AudioSystem.write(appendedFiles, AudioFileFormat.Type.WAVE, new File(folderPath + "/" + MERGE_TAPE_FILE_NAME + i + ".wav"));
                     }
                     RemoveFileUtils.removeFile(fileList[i]);
-                    RemoveFileUtils.removeFile(new File(folderPath + "/Tape_Ver_" + (i-1) + ".wav"));
+                    RemoveFileUtils.removeFile(new File(folderPath + "/" + MERGE_TAPE_FILE_NAME + (i-1) + ".wav"));
                 }
             }
 
