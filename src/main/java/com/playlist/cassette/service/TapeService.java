@@ -4,7 +4,6 @@ import com.playlist.cassette.dto.tape.*;
 import com.playlist.cassette.dto.track.TrackResponseDto;
 import com.playlist.cassette.entity.Member;
 import com.playlist.cassette.entity.Tape;
-import com.playlist.cassette.entity.Track;
 import com.playlist.cassette.handler.exception.ExceptionCode;
 import com.playlist.cassette.handler.exception.UserException;
 import com.playlist.cassette.repository.MemberRepository;
@@ -13,7 +12,6 @@ import com.playlist.cassette.repository.TrackRepository;
 import com.playlist.cassette.utils.RemoveFileUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +21,6 @@ import javax.sound.sampled.AudioSystem;
 import java.io.File;
 import java.io.IOException;
 import java.io.SequenceInputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -37,6 +34,7 @@ import java.util.stream.Collectors;
 @Service
 public class TapeService {
 
+    private final int NUMBER_OF_TAPE_PER_MEMBER_EXCEEDS = 1;
     private final int FIRST_BASE_FILE_INDEX = 1;
     private final String MERGE_TAPE_FILE_NAME = "Tape_Ver_";
     private final AwsS3Service awsS3Service;
@@ -60,6 +58,10 @@ public class TapeService {
     public TapeResponseDto createTape(Long memberId, TapeSaveRequestDto requestDto) {
         Member member = memberRepository.findById(memberId).orElseThrow(() ->
                 new UserException(ExceptionCode.INVALID_MEMBER, ExceptionCode.INVALID_MEMBER.getMessage()));
+
+        if (is_exceed_tape(member)) {
+            throw new UserException(ExceptionCode.NUMBER_OF_TAPE_PER_MEMBER_EXCEEDS_1, ExceptionCode.NUMBER_OF_TAPE_PER_MEMBER_EXCEEDS_1.getMessage());
+        }
         Tape tape = tapeRepository.save(requestDto.toEntity(member));
 
         return TapeResponseDto.builder().tape(tape).build();
@@ -171,4 +173,7 @@ public class TapeService {
 
     }
 
+    private boolean is_exceed_tape(Member member) {
+        return member.getTapes().size() >= NUMBER_OF_TAPE_PER_MEMBER_EXCEEDS;
+    }
 }
