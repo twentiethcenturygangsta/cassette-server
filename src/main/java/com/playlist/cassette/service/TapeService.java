@@ -176,5 +176,4 @@ public class TapeService {
     private boolean is_exceed_tape(Member member) {
         return member.getTapes().size() >= NUMBER_OF_TAPE_PER_MEMBER_EXCEEDS;
     }
-
 }
