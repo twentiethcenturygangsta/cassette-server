@@ -43,7 +43,7 @@ public class TrackService {
 
     @Transactional
     public TrackResponseDto createTrack(TrackSaveRequestDto requestDto, MultipartFile multipartFile, String dirName) throws IOException {
-        Tape tape = tapeRepository.findByTapeLink(requestDto.getTapeLink()).orElseThrow(() ->
+        Tape tape = tapeRepository.findByTapeLinkAndIsRemoved(requestDto.getTapeLink(), false).orElseThrow(() ->
                 new UserException(ExceptionCode.NOT_FOUND_TAPES, ExceptionCode.NOT_FOUND_TAPES.getMessage()));
 
         if (is_exceed_track(tape)) {
