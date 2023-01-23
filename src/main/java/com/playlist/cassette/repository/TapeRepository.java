@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface TapeRepository extends JpaRepository<Tape, Long> {
     Optional<Tape> findTapeByMember(Member member);
     List<Tape> findTapesByMember(Member member);
-    Optional<Tape> findByTapeLink(String tapeLink);
+    Optional<Tape> findByTapeLinkAndIsRemoved(String tapeLink, boolean isRemoved);
 }

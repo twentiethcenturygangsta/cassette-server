@@ -49,7 +49,7 @@ public class TapeService {
     }
 
     public TapeGuestResponseDto getTape(String tapeLink) {
-        Tape tape = tapeRepository.findByTapeLink(tapeLink).orElseThrow(() ->
+        Tape tape = tapeRepository.findByTapeLinkAndIsRemoved(tapeLink, false).orElseThrow(() ->
                 new UserException(ExceptionCode.NOT_FOUND_TAPES, ExceptionCode.NOT_FOUND_TAPES.getMessage()));
 
         return TapeGuestResponseDto.builder().tape(tape).build();
