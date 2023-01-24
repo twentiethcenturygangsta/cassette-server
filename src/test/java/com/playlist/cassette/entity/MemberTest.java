@@ -84,10 +84,10 @@ public class MemberTest {
     }
 
     @Nested
-    @DisplayName("member 객체의 refreshToken, expiredTime update 테스트")
-    class TestMemberUpdateRefreshToken {
+    @DisplayName("member 객체의 method 테스트")
+    class TestMemberMethod {
         @Test
-        @DisplayName("refreshToken, expiredTime이 수정이 된다.")
+        @DisplayName("refreshToken, refreshTokenExpireTime이 수정이 된다.")
         public void test_update_refresh_token_in_member_성공() {
             Date expiredTime = new Date();
 
@@ -101,6 +101,22 @@ public class MemberTest {
                 presentedMember.updateRefreshToken(tokenDto);
                 assertThat(presentedMember.getRefreshToken()).isEqualTo(tokenDto.getValue());
                 assertThat(presentedMember.getRefreshTokenExpireTime()).isEqualTo(tokenDto.getExpiredTime());
+            });
+        }
+
+        @Test
+        @DisplayName("removeStatus가 수정이 된다.")
+        public void test_update_remove_status_in_member_성공() {
+
+            Optional<Member> savedMember = memberRepository.findByKakaoMemberId(1L);
+
+            savedMember.ifPresent(presentedMember -> {
+                presentedMember.updateRemovedStatus();
+                assertThat(presentedMember.getIsRemoved()).isEqualTo(true);
+
+                presentedMember.updateUnRemovedStatus();
+                assertThat(presentedMember.getIsRemoved()).isEqualTo(false);
+
             });
         }
     }
