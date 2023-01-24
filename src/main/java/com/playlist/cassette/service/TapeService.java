@@ -71,7 +71,7 @@ public class TapeService {
         Tape tape = tapeRepository.findById(tapeId).orElseThrow(() ->
                 new UserException(ExceptionCode.NOT_FOUND_TAPES, ExceptionCode.NOT_FOUND_TAPES.getMessage()));
 
-        tape.update(requestDto.getColorCode(), requestDto.getTitle());
+        tape.update(requestDto.getColorCode(), requestDto.getTitle(), requestDto.getName());
         tapeRepository.save(tape);
 
         return TapeResponseDto.builder().tape(tape).build();
