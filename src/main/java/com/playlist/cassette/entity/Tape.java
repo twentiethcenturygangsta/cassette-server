@@ -46,8 +46,9 @@ public class Tape extends BaseAuditEntity {
         this.audioLink = audioLink;
     }
 
-    public void update(String colorCode, String name) {
+    public void update(String colorCode, String title, String name) {
         this.colorCode = colorCode;
+        this.title = title;
         this.name = name;
     }
 
