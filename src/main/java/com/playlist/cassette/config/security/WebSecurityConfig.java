@@ -30,13 +30,16 @@ public class WebSecurityConfig {
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/callback",
-            "/api/v1/track"
+            "/api/v1/track",
+            "/api/v1/tape/{uuid}/guest"
     };
     private static final String[] AUTH_CONFIRM_LIST = {
             "/api/v1/track/{id}",
             "/api/v1/track/download/{id}",
             "/api/v1/member/**",
-            "/api/v1/tape/**",
+            "/api/v1/tape",
+            "/api/v1/tape/{id}",
+            "/api/v1/tape/download/{id}",
             "/api/v1/auth/**"
     };
 
