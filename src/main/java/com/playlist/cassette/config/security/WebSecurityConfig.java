@@ -5,9 +5,9 @@ import com.playlist.cassette.config.security.jwt.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -31,16 +31,9 @@ public class WebSecurityConfig {
             "/swagger-ui/**",
             "/callback",
             "/api/v1/track",
-            "/api/v1/tape/{uuid}/guest"
     };
-    private static final String[] AUTH_CONFIRM_LIST = {
-            "/api/v1/track/{id}",
-            "/api/v1/track/download/{id}",
-            "/api/v1/member/**",
-            "/api/v1/tape",
-            "/api/v1/tape/{id}",
-            "/api/v1/tape/download/{id}",
-            "/api/v1/auth/**"
+    private static final String[] AUTH_GET_WHITELIST = {
+            "/api/v1/tape/{id}"
     };
 
     @Bean
@@ -60,8 +53,9 @@ public class WebSecurityConfig {
                         UsernamePasswordAuthenticationFilter.class
                 )
                 .authorizeHttpRequests()
-                .requestMatchers(AUTH_CONFIRM_LIST).authenticated()
                 .requestMatchers(AUTH_WHITELIST).permitAll()
+                .requestMatchers(HttpMethod.GET, AUTH_GET_WHITELIST).permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .build(); // 권한 설정
     }
