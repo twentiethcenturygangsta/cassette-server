@@ -27,8 +27,8 @@ public class TapeController {
         return ResponseHandler.generateResponse(HttpStatus.OK, tape);
     }
 
-    @GetMapping("/{uuid}/guest")
-    public ResponseEntity<Object> getTape(@PathVariable("uuid") String tapeLink) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getTape(@PathVariable("id") String tapeLink) {
         TapeGuestResponseDto tape = tapeService.getTape(tapeLink);
         return ResponseHandler.generateResponse(HttpStatus.OK, tape);
     }
