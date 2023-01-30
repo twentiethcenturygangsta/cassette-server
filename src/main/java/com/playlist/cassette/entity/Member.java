@@ -29,7 +29,7 @@ public class Member extends BaseAuditEntity{
     private String refreshToken;
     private Date refreshTokenExpireTime;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Tape> tapes = new ArrayList<>();
 
     @Builder
