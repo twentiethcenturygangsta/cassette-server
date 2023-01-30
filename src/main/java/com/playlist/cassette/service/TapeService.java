@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @Service
 public class TapeService {
 
-    private final int NUMBER_OF_TAPE_PER_MEMBER_EXCEEDS = 1;
+    private final int NUMBER_OF_TAPE_PER_MEMBER_EXCEEDS = 4;
     private final int FIRST_BASE_FILE_INDEX = 1;
     private final String MERGE_TAPE_FILE_NAME = "Tape_Ver_";
     private final AwsS3Service awsS3Service;

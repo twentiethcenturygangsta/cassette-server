@@ -1,6 +1,7 @@
 package com.playlist.cassette.entity;
 
 import com.playlist.cassette.utils.RandomStringUtils;
+import com.twentiethcenturygangsta.jamboard.trace.JamBoardEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JamBoardEntity(group="cassette", description = "Tape 정보")
 @Entity
 public class Tape extends BaseAuditEntity {
 
