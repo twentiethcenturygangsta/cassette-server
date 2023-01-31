@@ -33,6 +33,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.857'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 	implementation 'org.json:json:20200518'
 	compileOnly 'org.projectlombok:lombok'
