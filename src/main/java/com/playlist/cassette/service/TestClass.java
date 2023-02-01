@@ -1,24 +1,17 @@
 package com.playlist.cassette.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.playlist.cassette.entity.Member;
-import com.playlist.cassette.entity.Tape;
-import com.playlist.cassette.entity.Track;
-import com.twentiethcenturygangsta.jamboard.auth.Role;
-import com.twentiethcenturygangsta.jamboard.auth.UserCredentials;
-import com.twentiethcenturygangsta.jamboard.controller.AdminController;
-import com.twentiethcenturygangsta.jamboard.database.UserDatabaseCredentials;
-import com.twentiethcenturygangsta.jamboard.site.JamBoardClient;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import com.twentiethcenturygangsta.ourboard.auth.Role;
+import com.twentiethcenturygangsta.ourboard.auth.UserCredentials;
+import com.twentiethcenturygangsta.ourboard.database.UserDatabaseCredentials;
+import com.twentiethcenturygangsta.ourboard.site.OurBoardClient;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 
 @Slf4j
 @Configuration
@@ -34,7 +27,7 @@ public class TestClass {
     private String password;
 
     @Bean
-    public JamBoardClient jamBoardClient() throws SQLException {
+    public OurBoardClient jamBoardClient() throws SQLException {
         UserDatabaseCredentials userDatabaseCredentials = new UserDatabaseCredentials(
                 url,
                 userName,
@@ -46,7 +39,7 @@ public class TestClass {
                 Role.SUPER_USER
         );
 
-        return JamBoardClient.builder()
+        return OurBoardClient.builder()
                 .userDatabaseCredentials(userDatabaseCredentials)
                 .userCredentials(userCredentials)
                 .basePackagePath("com.playlist.cassette")

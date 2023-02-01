@@ -1,7 +1,7 @@
 package com.playlist.cassette.entity;
 
 import com.playlist.cassette.dto.auth.TokenDto;
-import com.twentiethcenturygangsta.jamboard.trace.JamBoardEntity;
+import com.twentiethcenturygangsta.ourboard.trace.OurBoardEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@JamBoardEntity(group="cassette", description = "Member 정보")
+@OurBoardEntity(group="cassette", description = "Member 정보")
 @Entity
 public class Member extends BaseAuditEntity{
 
