@@ -6,4 +6,5 @@ import lombok.Getter;
 @Getter
 public class MemberWithdrawalRequestDto {
     private MemberWithdrawalType withdrawalType;
+    private String withdrawalReason;
 }

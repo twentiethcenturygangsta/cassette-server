@@ -51,6 +51,7 @@ public class MemberService {
         memberRepository.delete(member);
         MemberWithdrawalLog memberWithdrawalLog = MemberWithdrawalLog.builder()
                 .withdrawalType(memberWithdrawalRequestDto.getWithdrawalType())
+                .withdrawalReason(memberWithdrawalRequestDto.getWithdrawalReason())
                 .build();
         memberWithdrawalLogRepository.save(memberWithdrawalLog);
         return MemberWithdrawalResponseDto.builder()

@@ -5,5 +5,6 @@ public enum MemberWithdrawalType {
     REJOIN,
     INCONVENIENCE,
     SERVICE_NOT_USED,
-    NOT_REMOVE_TAPE
+    NOT_REMOVE_TAPE,
+    ETC
     }
