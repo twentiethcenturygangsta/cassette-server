@@ -24,13 +24,16 @@ public class MemberWithdrawalLog {
     @Enumerated(EnumType.STRING)
     private MemberWithdrawalType withdrawalType;
 
+    private String withdrawalReason;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Builder
-    public MemberWithdrawalLog(MemberWithdrawalType withdrawalType) {
+    public MemberWithdrawalLog(MemberWithdrawalType withdrawalType, String withdrawalReason) {
         this.withdrawalType = withdrawalType;
+        this.withdrawalReason = withdrawalReason;
 
     }
 }
