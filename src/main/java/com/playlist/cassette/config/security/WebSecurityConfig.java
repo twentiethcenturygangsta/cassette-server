@@ -31,7 +31,7 @@ public class WebSecurityConfig {
             "/swagger-ui/**",
             "/callback",
             "/api/v1/track",
-            "/admin/**",
+            "/our-board/**",
             "/css/**",
             "/static/**",
             "/resources/**"

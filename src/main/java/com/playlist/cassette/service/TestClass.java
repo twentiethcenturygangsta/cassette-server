@@ -5,8 +5,11 @@ import com.twentiethcenturygangsta.ourboard.auth.UserCredentials;
 import com.twentiethcenturygangsta.ourboard.database.UserDatabaseCredentials;
 import com.twentiethcenturygangsta.ourboard.site.OurBoardClient;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,6 +28,8 @@ public class TestClass {
 
     @Value("${spring.datasource.password}")
     private String password;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Bean
     public OurBoardClient jamBoardClient() throws SQLException {
@@ -38,6 +43,13 @@ public class TestClass {
                 "test1234",
                 Role.SUPER_USER
         );
+
+        String[] beans = applicationContext.getBeanDefinitionNames();
+
+        for (String bean : beans) {
+            log.info("bean = {}" + bean);
+        }
+
 
         return OurBoardClient.builder()
                 .userDatabaseCredentials(userDatabaseCredentials)
