@@ -104,7 +104,7 @@ public class AuthService {
         cookie.setPath("/");
 
         response.addCookie(cookie);
-        response.addHeader("Access-Control-Exposed-Headers", "set-cookie");
+//        response.addHeader("Access-Control-Exposed-Headers", "set-cookie");
     }
 }
 
