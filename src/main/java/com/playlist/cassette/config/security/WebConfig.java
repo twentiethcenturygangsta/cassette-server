@@ -15,6 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:3000", "https://www.12playlist.com", "https://www.gangstatest.12playlist.com")
                 .allowedMethods("*")
                 .allowedHeaders("*")
+                .exposedHeaders("Set-Cookie")
                 .allowCredentials(true);
     }
 }
