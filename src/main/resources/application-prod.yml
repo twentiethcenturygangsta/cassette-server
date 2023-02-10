@@ -16,7 +16,7 @@ kakao:
   restApiKey:
   redirectUrlLocalServer: http://localhost:3000/kakao/bridge
   redirectUrlDevServer: https://cassette-git-develop-kimkyungmin123.vercel.app/kakao/bridge
-  redirectUrlProdServer : https://cassette-git-develop-kimkyungmin123.vercel.app/bridge
+  redirectUrlProdServer: https://cassette-git-develop-kimkyungmin123.vercel.app/kakao/bridge
 
 cloud:
   aws:
