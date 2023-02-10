@@ -16,6 +16,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -97,14 +98,19 @@ public class AuthService {
 
     private void setCookieWithRefreshToken(HttpServletResponse response, TokenDto refreshToken) {
 
-        Cookie cookie = new Cookie("refreshToken", refreshToken.getValue());
-        cookie.setMaxAge(14*24*60*60);
-        cookie.setSecure(true);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-
-        response.addCookie(cookie);
-        response.addHeader("REFRESH_TOKEN", refreshToken.getValue());
+//        Cookie cookie = new Cookie("refreshToken", refreshToken.getValue());
+//        cookie.setMaxAge(14*24*60*60);
+//        cookie.setSecure(true);
+//        cookie.setHttpOnly(true);
+//        cookie.setPath("/");
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken.getValue())
+                .maxAge(14*24*60*60)
+                .path("/")
+                .secure(true)
+                .httpOnly(true)
+                .build();
+//        response.addCookie(cookie);
+        response.setHeader("refreshToken", cookie.toString());
     }
 }
 
