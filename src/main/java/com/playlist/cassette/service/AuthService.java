@@ -104,7 +104,7 @@ public class AuthService {
         cookie.setPath("/");
 
         response.addCookie(cookie);
-        response.addHeader("Set-Cookie", refreshToken.getValue());
+        response.addHeader("REFRESH_TOKEN", refreshToken.getValue());
     }
 }
 
