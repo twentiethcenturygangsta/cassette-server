@@ -5,7 +5,6 @@ import com.twentiethcenturygangsta.ourboard.auth.UserCredentials;
 import com.twentiethcenturygangsta.ourboard.database.UserDatabaseCredentials;
 import com.twentiethcenturygangsta.ourboard.site.OurBoardClient;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,11 +43,11 @@ public class TestClass {
                 Role.SUPER_USER
         );
 
-        String[] beans = applicationContext.getBeanDefinitionNames();
+//        String[] beans = applicationContext.getBeanDefinitionNames();
 
-        for (String bean : beans) {
-            log.info("bean = {}" + bean);
-        }
+//        for (String bean : beans) {
+//            log.info("bean = {}" + bean);
+//        }
 
 
         return OurBoardClient.builder()

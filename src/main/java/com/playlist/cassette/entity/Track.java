@@ -1,13 +1,12 @@
 package com.playlist.cassette.entity;
 
-import com.twentiethcenturygangsta.ourboard.trace.OurBoardEntity;
+import com.twentiethcenturygangsta.ourboard.annoatation.OurBoardEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @OurBoardEntity(group="cassette111", description = "Track 정보")
-
 @Entity
 public class Track extends BaseAuditEntity {
 
