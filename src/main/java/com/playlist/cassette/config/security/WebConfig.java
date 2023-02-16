@@ -15,6 +15,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "http://localhost:3000",
                         "https://www.12playlist.com",
+                        "https://ganstatest.12playlist.com",
+                        "https://www.ganstatest.12playlist.com",
                         "https://12playlist.com",
                         "https://www.gangstatest.12playlist.com",
                         "https://gangstatest.12playlist.com",
