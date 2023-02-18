@@ -20,6 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "https://12playlist.com",
                         "https://www.gangstatest.12playlist.com",
                         "https://gangstatest.12playlist.com",
+                        "https://api.12playlist.com",
                         "https://cassette-git-develop-kimkyungmin123.vercel.app"
                 )
                 .allowedMethods("*")
