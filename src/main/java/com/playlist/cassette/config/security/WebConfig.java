@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
 //                )
                 .allowedMethods("*")
                 .allowedHeaders("*")
-                .exposedHeaders("refreshToken")
-                .allowCredentials(true);
+                .exposedHeaders("refreshToken");
+//                .allowCredentials(true);
     }
 }
