@@ -53,7 +53,6 @@ public class TestClass {
         return OurBoardClient.builder()
                 .userDatabaseCredentials(userDatabaseCredentials)
                 .userCredentials(userCredentials)
-                .basePackagePath("com.playlist.cassette")
                 .build();
     }
 }
