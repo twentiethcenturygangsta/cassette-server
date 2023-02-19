@@ -26,7 +26,7 @@ public class Tape extends BaseAuditEntity {
     private Member member;
 
     @OneToMany(mappedBy = "tape", cascade = CascadeType.ALL)
-    private List<Track> tracks = new ArrayList<>();
+    private final List<Track> tracks = new ArrayList<>();
 
     private String colorCode;
     private String title;
@@ -55,5 +55,9 @@ public class Tape extends BaseAuditEntity {
     public void updateAudioLink(String fileName, String audioLink) {
         this.fileName = fileName;
         this.audioLink = audioLink;
+    }
+
+    public void setMemberToNull() {
+        this.member = null;
     }
 }

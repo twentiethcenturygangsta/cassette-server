@@ -10,7 +10,6 @@ import com.playlist.cassette.handler.exception.ExceptionCode;
 import com.playlist.cassette.handler.exception.UserException;
 import com.playlist.cassette.repository.MemberRepository;
 import com.playlist.cassette.repository.MemberWithdrawalLogRepository;
-import com.playlist.cassette.repository.TapeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ import java.util.List;
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final TapeRepository tapeRepository;
     private final MemberWithdrawalLogRepository memberWithdrawalLogRepository;
 
     public MemberResponseDto getMember(Long id) {
@@ -78,7 +76,8 @@ public class MemberService {
     private void removeMemberTapes(List<Tape> tapes) {
         for (Tape tape : tapes) {
             tape.updateRemovedStatus();
-            tapeRepository.save(tape);
+            tape.setMemberToNull();
         }
     }
+
 }
