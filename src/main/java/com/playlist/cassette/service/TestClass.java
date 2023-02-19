@@ -27,28 +27,22 @@ public class TestClass {
 
     @Value("${spring.datasource.password}")
     private String password;
-    @Autowired
-    private ApplicationContext applicationContext;
+
+    @Value("${secretKey}")
+    private String secretKty;
 
     @Bean
-    public OurBoardClient jamBoardClient() throws SQLException {
+    public OurBoardClient jamBoardClient() throws Exception {
         UserDatabaseCredentials userDatabaseCredentials = new UserDatabaseCredentials(
                 url,
                 userName,
                 password
         );
         UserCredentials userCredentials = new UserCredentials(
+                secretKty,
                 "test",
-                "test1234",
-                Role.SUPER_USER
+                "test1234"
         );
-
-//        String[] beans = applicationContext.getBeanDefinitionNames();
-
-//        for (String bean : beans) {
-//            log.info("bean = {}" + bean);
-//        }
-
 
         return OurBoardClient.builder()
                 .userDatabaseCredentials(userDatabaseCredentials)
