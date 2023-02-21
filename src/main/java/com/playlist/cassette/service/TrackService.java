@@ -60,9 +60,9 @@ public class TrackService {
         String audioLink = awsS3Service.upload(uploadFile, dirName);
 
         track.update(fileName, audioLink);
-        trackRepository.save(track);
+        Track trackData = trackRepository.save(track);
 
-        if(tape.getTracks().size() == MAXIMUM_SIZE_OF_TRACKS_PER_TAPE-1) tapeService.uploadTape(tape, dirName);
+        if(tape.getTracks().size() == MAXIMUM_SIZE_OF_TRACKS_PER_TAPE) tapeService.uploadTape(tape, dirName);
 
         return TrackResponseDto.builder().track(track).build();
     }
