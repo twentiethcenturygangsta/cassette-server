@@ -28,7 +28,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class TrackService {
-    private final int MAXIMUM_SIZE_OF_TRACKS_PER_TAPE = 12;
+    private static final int MAXIMUM_SIZE_OF_TRACKS_PER_TAPE = 12;
     private final AwsS3Service awsS3Service;
     private final TapeService tapeService;
     private final TapeRepository tapeRepository;
