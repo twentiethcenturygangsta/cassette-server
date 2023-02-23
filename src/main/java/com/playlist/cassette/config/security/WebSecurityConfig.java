@@ -32,9 +32,9 @@ public class WebSecurityConfig {
             "/callback",
             "/api/v1/track",
             "/our-board/**",
-            "/css/**",
-            "/static/**",
-            "/resources/**"
+//            "/css/**",
+//            "/static/**",
+            "/ourboard-resources/**"
     };
     private static final String[] AUTH_CONFIRM_LIST = {
             "/api/v1/track/{id}",
