@@ -9,7 +9,7 @@ import lombok.*;
 public class Track extends BaseAuditEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "track_id")
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)

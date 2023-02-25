@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 
 @RestController
@@ -29,7 +30,7 @@ public class TrackController {
 
     @PostMapping
     public ResponseEntity<Object> createTrack(@RequestPart("data") @Valid TrackSaveRequestDto requestDto,
-                                              @RequestParam("file") MultipartFile multipartFile) throws IOException {
+                                              @RequestParam("file") MultipartFile multipartFile) throws Exception {
         TrackResponseDto track = trackService.createTrack(requestDto, multipartFile, "audio");
 
         return ResponseHandler.generateResponse(HttpStatus.OK, track);

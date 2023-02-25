@@ -17,12 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.Optional;
-
 
 @Slf4j
 @RequiredArgsConstructor
@@ -42,7 +39,7 @@ public class TrackService {
     }
 
     @Transactional
-    public TrackResponseDto createTrack(TrackSaveRequestDto requestDto, MultipartFile multipartFile, String dirName) throws IOException {
+    public TrackResponseDto createTrack(TrackSaveRequestDto requestDto, MultipartFile multipartFile, String dirName) throws Exception {
         Tape tape = tapeRepository.findByTapeLinkAndIsRemoved(requestDto.getTapeLink(), false).orElseThrow(() ->
                 new UserException(ExceptionCode.NOT_FOUND_TAPES, ExceptionCode.NOT_FOUND_TAPES.getMessage()));
 
@@ -51,8 +48,8 @@ public class TrackService {
         }
         Track track = trackRepository.save(requestDto.toEntity(tape));
 
-        String type = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
-        String fileName = track.getTape().getId() + "_" + track.getId() + type;
+        String fileName = track.getTape().getId() + "_" + track.getId() + ".wav";
+        System.out.println(fileName);
 
         File uploadFile = convert(multipartFile, fileName).orElseThrow(() ->
                 new UserException(ExceptionCode.NOT_INVALID_FILE_FORMAT, ExceptionCode.NOT_INVALID_FILE_FORMAT.getMessage()));

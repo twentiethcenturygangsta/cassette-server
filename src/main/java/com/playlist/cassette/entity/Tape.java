@@ -18,7 +18,7 @@ public class Tape extends BaseAuditEntity {
     private static final int TAPE_LINK_LENGTH = 6;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tape_id")
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)

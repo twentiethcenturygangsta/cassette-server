@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class MemberWithdrawalLog {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_withdrawal_log_id")
     private Long id;
 
