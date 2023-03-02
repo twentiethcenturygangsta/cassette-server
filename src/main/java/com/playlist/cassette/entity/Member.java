@@ -29,6 +29,7 @@ public class Member extends BaseAuditEntity{
     private String age;
     private Long kakaoMemberId;
     private String refreshToken;
+    private SocialLoginType socialLoginType;
     private Date refreshTokenExpireTime;
 
     @OneToMany(mappedBy = "member")
