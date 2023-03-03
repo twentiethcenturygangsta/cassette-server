@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TrackResponseDto {
@@ -16,6 +18,7 @@ public class TrackResponseDto {
     private String name;
     private String fileName;
     private String audioLink;
+    private String createAt;
 
     @Builder
     public TrackResponseDto(Track track) {
@@ -26,5 +29,6 @@ public class TrackResponseDto {
         this.name = track.getName();
         this.fileName = track.getFileName();
         this.audioLink = track.getAudioLink();
+        this.createAt = String.valueOf(track.getCreatedAt());
     }
 }

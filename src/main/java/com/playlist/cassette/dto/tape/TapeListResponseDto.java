@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,7 @@ public class TapeListResponseDto {
     private String tapeLink;
     private String fileName;
     private String audioLink;
+    private String createAt;
     private List<TrackResponseDto> tracks;
 
     public TapeListResponseDto(Tape tape) {
@@ -31,6 +33,7 @@ public class TapeListResponseDto {
         this.tapeLink = tape.getTapeLink();
         this.fileName = tape.getFileName();
         this.audioLink = tape.getAudioLink();
+        this.createAt = String.valueOf(tape.getCreatedAt());
         this.tracks = tape.getTracks().stream().map(TrackResponseDto::new).collect(Collectors.toList());
     }
 }
