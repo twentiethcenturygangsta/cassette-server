@@ -1,7 +1,6 @@
 package com.playlist.cassette.config.security.jwt;
 
 import com.playlist.cassette.handler.exception.ExceptionCode;
-import com.playlist.cassette.handler.exception.UserException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +30,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             JwtValidationType jwtValidationType = jwtTokenProvider.validateToken(jwt);
             if (StringUtils.hasText(jwt) && jwtValidationType == JwtValidationType.VALID_JWT) {
                 Long userId = jwtTokenProvider.getUserFromJwt(jwt);
-
                 UserAuthentication authentication = new UserAuthentication(userId, null, null);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
