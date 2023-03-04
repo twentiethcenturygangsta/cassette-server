@@ -28,8 +28,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private static final long REFRESH_TOKEN_EXPIRATION_TIME_GAP = 604800000;  // 1week
-//    private static final long REFRESH_TOKEN_EXPIRATION_TIME_GAP = 70000;  // 50 seconds
+//    private static final long REFRESH_TOKEN_EXPIRATION_TIME_GAP = 604800000;  // 1week
+    private static final long REFRESH_TOKEN_EXPIRATION_TIME_GAP = 70000;  // 50 seconds
 
     private static final String REFRESH_TOKEN_SECURE_MESSAGE = "HTTP_ONLY";
     private final MemberRepository memberRepository;
@@ -62,11 +62,11 @@ public class AuthService {
     }
 
     public JwtTokenDto refreshToken(String token, HttpServletResponse response) {
-        String refreshToken = token.substring(7);
-        JwtValidationType jwtValidationType = jwtTokenProvider.validateToken(refreshToken);
+//        String refreshToken = token.substring(7);
+        JwtValidationType jwtValidationType = jwtTokenProvider.validateToken(token);
         String accessToken = "";
         if (jwtValidationType.equals(JwtValidationType.VALID_JWT)) {
-            Member member = isValidMemberWithRefreshTokenInDatabase(refreshToken);
+            Member member = isValidMemberWithRefreshTokenInDatabase(token);
             Authentication authentication = new UserAuthentication(member.getId(), null, null);
             accessToken = jwtTokenProvider.generateAccessToken(authentication).getValue();
             if (isExpiredRefreshToken(member)) {
@@ -75,6 +75,8 @@ public class AuthService {
                 memberRepository.save(member);
                 setCookieWithRefreshToken(response, newRefreshToken);
             }
+        } else if(jwtValidationType.equals(JwtValidationType.EXPIRED_JWT_TOKEN)) {
+            throw new UserException(ExceptionCode.EXPIRED_JWT_TOKEN, ExceptionCode.EXPIRED_JWT_TOKEN.getMessage());
         }
         return JwtTokenDto.builder()
                 .accessToken(accessToken)
@@ -98,19 +100,13 @@ public class AuthService {
 
     private void setCookieWithRefreshToken(HttpServletResponse response, TokenDto refreshToken) {
 
-//        Cookie cookie = new Cookie("refreshToken", refreshToken.getValue());
-//        cookie.setMaxAge(14*24*60*60);
-//        cookie.setSecure(true);
-//        cookie.setHttpOnly(true);
-//        cookie.setPath("/");
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken.getValue())
-                .maxAge(14*24*60*60)
-                .path("/")
-                .secure(true)
-                .httpOnly(true)
-                .build();
-//        response.addCookie(cookie);
-        response.setHeader("refreshToken", cookie.toString());
+        Cookie cookie = new Cookie("refreshToken", refreshToken.getValue());
+        cookie.setMaxAge(14*24*60*60);
+        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
     }
 }
 

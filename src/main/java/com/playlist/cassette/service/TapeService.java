@@ -45,6 +45,7 @@ public class TapeService {
     public List<TapeListResponseDto> getTapes(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() ->
                 new UserException(ExceptionCode.INVALID_MEMBER, ExceptionCode.INVALID_MEMBER.getMessage()));
+
         return tapeRepository.findTapesByMember(member).stream().map(TapeListResponseDto::new).collect(Collectors.toList());
     }
 

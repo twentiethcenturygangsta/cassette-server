@@ -31,6 +31,7 @@ public class WebSecurityConfig {
             "/swagger-ui/**",
             "/callback",
             "/api/v1/track",
+            "/api/v1/auth/refresh"
     };
     private static final String[] AUTH_GET_WHITELIST = {
             "/api/v1/tape/{id}"
