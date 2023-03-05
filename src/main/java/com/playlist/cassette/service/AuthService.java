@@ -113,7 +113,7 @@ public class AuthService {
                 .secure(true)
                 .sameSite("None")
                 .httpOnly(true)
-                .domain("api.12playlist.store")
+                .domain("12playlist.com")
                 .maxAge(14*24*60*60)
                 .build();
 
