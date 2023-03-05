@@ -16,6 +16,13 @@ spring:
         show_sql: true
         format_sql:
 
+server:
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
+
 kakao:
   restApiKey:
   redirectUrlLocalServer: http://localhost:3000/kakao/bridge
