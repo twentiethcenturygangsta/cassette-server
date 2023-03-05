@@ -111,8 +111,9 @@ public class AuthService {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken.getValue())
                 .path("/")
                 .secure(true)
-                .sameSite("none")
+                .sameSite("None")
                 .httpOnly(true)
+                .domain("ganstatest.12playlist.com")
                 .maxAge(14*24*60*60)
                 .build();
 
