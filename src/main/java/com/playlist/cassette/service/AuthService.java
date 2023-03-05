@@ -104,6 +104,7 @@ public class AuthService {
         cookie.setMaxAge(14*24*60*60);
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
+        cookie.setDomain("api.12playlist.store");
         cookie.setPath("/");
 
         response.addCookie(cookie);
