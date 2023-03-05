@@ -100,15 +100,25 @@ public class AuthService {
 
     private void setCookieWithRefreshToken(HttpServletResponse response, TokenDto refreshToken) {
 
-        Cookie cookie = new Cookie("refreshToken", refreshToken.getValue());
-        cookie.setMaxAge(14*24*60*60);
-        cookie.setSecure(true);
-        cookie.setHttpOnly(true);
-        cookie.setAttribute("SameSite", "None");
-//        cookie.setDomain("api.12playlist.store");
-        cookie.setPath("/");
+//        Cookie cookie = new Cookie("refreshToken", refreshToken.getValue());
+//        cookie.setMaxAge(14*24*60*60);
+//        cookie.setSecure(true);
+//        cookie.setHttpOnly(true);
+//        cookie.setAttribute("SameSite", "None");
+////        cookie.setDomain("api.12playlist.store");
+//        cookie.setPath("/");
 
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken.getValue())
+                .path("/")
+                .secure(true)
+                .sameSite("None")
+                .httpOnly(true)
+                .maxAge(14*24*60*60)
+                .build();
+
+        response.setHeader("Set-Cookie", cookie.toString());
+
+//        response.addCookie(cookie);
     }
 }
 
