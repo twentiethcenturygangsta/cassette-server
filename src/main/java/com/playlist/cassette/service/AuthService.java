@@ -105,7 +105,7 @@ public class AuthService {
         cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setAttribute("SameSite", "None");
-        cookie.setDomain("api.12playlist.store");
+//        cookie.setDomain("api.12playlist.store");
         cookie.setPath("/");
 
         response.addCookie(cookie);
