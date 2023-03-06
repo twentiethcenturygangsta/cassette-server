@@ -100,20 +100,11 @@ public class AuthService {
 
     private void setCookieWithRefreshToken(HttpServletResponse response, TokenDto refreshToken) {
 
-//        Cookie cookie = new Cookie("refreshToken", refreshToken.getValue());
-//        cookie.setMaxAge(14*24*60*60);
-//        cookie.setSecure(true);
-//        cookie.setHttpOnly(true);
-//        cookie.setAttribute("SameSite", "None");
-////        cookie.setDomain("api.12playlist.store");
-//        cookie.setPath("/");
-
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken.getValue())
                 .path("/")
                 .secure(true)
-                .sameSite("None")
                 .httpOnly(true)
-                .domain("ganstatest.12playlist.com")
+                .domain("12playlist.com")
                 .maxAge(14*24*60*60)
                 .build();
 
