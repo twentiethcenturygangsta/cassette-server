@@ -28,8 +28,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthService {
 
-//    private static final long REFRESH_TOKEN_EXPIRATION_TIME_GAP = 604800000;  // 1week
-    private static final long REFRESH_TOKEN_EXPIRATION_TIME_GAP = 70000;  // 50 seconds
+    private static final long REFRESH_TOKEN_EXPIRATION_TIME_GAP = 604800000;  // 1week
+//    private static final long REFRESH_TOKEN_EXPIRATION_TIME_GAP = 70000;  // 50 seconds
 
     private static final String REFRESH_TOKEN_SECURE_MESSAGE = "HTTP_ONLY";
     private final MemberRepository memberRepository;
