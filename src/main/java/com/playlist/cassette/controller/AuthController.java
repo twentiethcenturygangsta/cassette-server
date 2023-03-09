@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,17 +21,12 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity<Object> refreshAuthToken(
+            @CookieValue("refreshToken") Cookie cookie,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        Cookie[] list = request.getCookies();
-        String refreshToken = "";
-        for(Cookie cookie:list) {
-            if(cookie.getName().equals("refreshToken")) {
-                refreshToken = cookie.getValue();
-            }
-        }
-        JwtTokenDto jwtTokenDto = authService.refreshToken(refreshToken, response);
+
+        JwtTokenDto jwtTokenDto = authService.refreshToken(cookie, response);
         return ResponseHandler.generateResponse(HttpStatus.OK, jwtTokenDto);
     }
 

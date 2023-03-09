@@ -5,6 +5,8 @@ import com.playlist.cassette.dto.member.MemberWithdrawalRequestDto;
 import com.playlist.cassette.dto.member.MemberWithdrawalResponseDto;
 import com.playlist.cassette.handler.response.ResponseHandler;
 import com.playlist.cassette.service.MemberService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +30,25 @@ public class MemberController {
     }
 
     @PostMapping("/withdrawal")
-    public ResponseEntity<Object> removeMember(Principal principal, @RequestBody MemberWithdrawalRequestDto memberWithdrawalRequestDto) {
+    public ResponseEntity<Object> removeMember(
+            Principal principal,
+            @RequestBody MemberWithdrawalRequestDto memberWithdrawalRequestDto,
+            @CookieValue("refreshToken") Cookie refreshToken,
+            HttpServletResponse response
+    ) {
         String memberId = principal.getName();
-        MemberWithdrawalResponseDto member = memberService.removeMember(Long.valueOf(memberId), memberWithdrawalRequestDto);
+        MemberWithdrawalResponseDto member = memberService.removeMember(
+                Long.valueOf(memberId),
+                memberWithdrawalRequestDto,
+                refreshToken,
+                response
+        );
         return ResponseHandler.generateResponse(HttpStatus.OK, member);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<Object> logout(Principal principal, @CookieValue("refreshToken") Cookie refreshToken, HttpServletResponse response) {
+        String cookie = memberService.logout(refreshToken, response);
+        return ResponseHandler.generateResponse(HttpStatus.OK, cookie);
     }
 }
