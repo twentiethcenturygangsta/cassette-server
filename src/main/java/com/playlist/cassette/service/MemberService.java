@@ -44,16 +44,25 @@ public class MemberService {
         return existedMember;
     }
     @Transactional
-    public MemberWithdrawalResponseDto removeMember(Long memberId, MemberWithdrawalRequestDto memberWithdrawalRequestDto) {
+    public MemberWithdrawalResponseDto removeMember(
+            Long memberId,
+            MemberWithdrawalRequestDto memberWithdrawalRequestDto,
+            Cookie refreshToken,
+            HttpServletResponse response
+    ) {
         Member member = memberRepository.findById(memberId).orElseThrow(() ->
                 new UserException(ExceptionCode.INVALID_MEMBER, ExceptionCode.INVALID_MEMBER.getMessage()));
         removeMemberTapes(member.getTapes());
         memberRepository.delete(member);
+
         MemberWithdrawalLog memberWithdrawalLog = MemberWithdrawalLog.builder()
                 .withdrawalType(memberWithdrawalRequestDto.getWithdrawalType())
                 .withdrawalReason(memberWithdrawalRequestDto.getWithdrawalReason())
                 .build();
         memberWithdrawalLogRepository.save(memberWithdrawalLog);
+
+        removeRefreshTokenInCookie(refreshToken, response);
+
         return MemberWithdrawalResponseDto.builder()
                 .member(member)
                 .memberWithdrawalLog(memberWithdrawalLog)
@@ -61,6 +70,10 @@ public class MemberService {
     }
 
     public String logout(Cookie refreshToken, HttpServletResponse response) {
+        return removeRefreshTokenInCookie(refreshToken, response);
+    }
+
+    private String removeRefreshTokenInCookie(Cookie refreshToken, HttpServletResponse response) {
         refreshToken.setMaxAge(0);
         refreshToken.setPath("/");
         response.addCookie(refreshToken);

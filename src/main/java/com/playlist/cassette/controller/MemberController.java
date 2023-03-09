@@ -30,9 +30,19 @@ public class MemberController {
     }
 
     @PostMapping("/withdrawal")
-    public ResponseEntity<Object> removeMember(Principal principal, @RequestBody MemberWithdrawalRequestDto memberWithdrawalRequestDto) {
+    public ResponseEntity<Object> removeMember(
+            Principal principal,
+            @RequestBody MemberWithdrawalRequestDto memberWithdrawalRequestDto,
+            @CookieValue("refreshToken") Cookie refreshToken,
+            HttpServletResponse response
+    ) {
         String memberId = principal.getName();
-        MemberWithdrawalResponseDto member = memberService.removeMember(Long.valueOf(memberId), memberWithdrawalRequestDto);
+        MemberWithdrawalResponseDto member = memberService.removeMember(
+                Long.valueOf(memberId),
+                memberWithdrawalRequestDto,
+                refreshToken,
+                response
+        );
         return ResponseHandler.generateResponse(HttpStatus.OK, member);
     }
 
