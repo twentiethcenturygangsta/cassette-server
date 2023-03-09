@@ -73,6 +73,7 @@ public class AuthService {
                 TokenDto newRefreshToken = jwtTokenProvider.generateRefreshToken(authentication);
                 member.updateRefreshToken(newRefreshToken);
                 memberRepository.save(member);
+                removeRefreshTokenInCookie(response, token);
                 setCookieWithRefreshToken(response, newRefreshToken);
             }
         } else if(jwtValidationType.equals(JwtValidationType.EXPIRED_JWT_TOKEN)) {
@@ -100,12 +101,11 @@ public class AuthService {
     }
 
     private void setCookieWithRefreshToken(HttpServletResponse response, TokenDto refreshToken) {
-
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken.getValue())
                 .path("/")
                 .secure(true)
                 .httpOnly(true)
-                .domain("12playlist.com")
+//                .domain("12playlist.com")
                 .maxAge(14*24*60*60)
                 .build();
 
