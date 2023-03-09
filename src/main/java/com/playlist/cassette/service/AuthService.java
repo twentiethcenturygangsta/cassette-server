@@ -104,7 +104,7 @@ public class AuthService {
                 .path("/")
                 .secure(true)
                 .httpOnly(true)
-                .domain("12playlist.com")
+//                .domain("12playlist.com")
                 .maxAge(14*24*60*60)
                 .build();
 

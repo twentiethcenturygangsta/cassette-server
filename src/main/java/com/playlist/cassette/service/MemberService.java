@@ -10,6 +10,8 @@ import com.playlist.cassette.handler.exception.ExceptionCode;
 import com.playlist.cassette.handler.exception.UserException;
 import com.playlist.cassette.repository.MemberRepository;
 import com.playlist.cassette.repository.MemberWithdrawalLogRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,6 +58,13 @@ public class MemberService {
                 .member(member)
                 .memberWithdrawalLog(memberWithdrawalLog)
                 .build();
+    }
+
+    public String logout(Cookie refreshToken, HttpServletResponse response) {
+        refreshToken.setMaxAge(0);
+        refreshToken.setPath("/");
+        response.addCookie(refreshToken);
+        return refreshToken.getValue();
     }
 
     private boolean isExistMember(Member member) {
