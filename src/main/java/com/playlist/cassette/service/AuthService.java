@@ -61,12 +61,12 @@ public class AuthService {
                 .build();
     }
 
-    public JwtTokenDto refreshToken(String token, HttpServletResponse response) {
+    public JwtTokenDto refreshToken(Cookie token, HttpServletResponse response) {
 //        String refreshToken = token.substring(7);
-        JwtValidationType jwtValidationType = jwtTokenProvider.validateToken(token);
+        JwtValidationType jwtValidationType = jwtTokenProvider.validateToken(token.getValue());
         String accessToken = "";
         if (jwtValidationType.equals(JwtValidationType.VALID_JWT)) {
-            Member member = isValidMemberWithRefreshTokenInDatabase(token);
+            Member member = isValidMemberWithRefreshTokenInDatabase(token.getValue());
             Authentication authentication = new UserAuthentication(member.getId(), null, null);
             accessToken = jwtTokenProvider.generateAccessToken(authentication).getValue();
             if (isExpiredRefreshToken(member)) {
@@ -76,6 +76,7 @@ public class AuthService {
                 setCookieWithRefreshToken(response, newRefreshToken);
             }
         } else if(jwtValidationType.equals(JwtValidationType.EXPIRED_JWT_TOKEN)) {
+            removeRefreshTokenInCookie(response, token);
             throw new UserException(ExceptionCode.EXPIRED_JWT_TOKEN, ExceptionCode.EXPIRED_JWT_TOKEN.getMessage());
         }
         return JwtTokenDto.builder()
@@ -104,13 +105,17 @@ public class AuthService {
                 .path("/")
                 .secure(true)
                 .httpOnly(true)
-//                .domain("12playlist.com")
+                .domain("12playlist.com")
                 .maxAge(14*24*60*60)
                 .build();
 
         response.setHeader("Set-Cookie", cookie.toString());
+    }
 
-//        response.addCookie(cookie);
+    private void removeRefreshTokenInCookie(HttpServletResponse response, Cookie refreshToken) {
+        refreshToken.setMaxAge(0);
+        refreshToken.setPath("/");
+        response.addCookie(refreshToken);
     }
 }
 
