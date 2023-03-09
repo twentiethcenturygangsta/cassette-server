@@ -114,6 +114,7 @@ public class AuthService {
 
     private void removeRefreshTokenInCookie(HttpServletResponse response, Cookie refreshToken) {
         refreshToken.setMaxAge(0);
+        refreshToken.setDomain("12playlist.com");
         refreshToken.setPath("/");
         response.addCookie(refreshToken);
     }

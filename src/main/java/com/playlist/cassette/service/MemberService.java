@@ -76,6 +76,7 @@ public class MemberService {
     private String removeRefreshTokenInCookie(Cookie refreshToken, HttpServletResponse response) {
         refreshToken.setMaxAge(0);
         refreshToken.setPath("/");
+        refreshToken.setDomain("12playlist.com");
         response.addCookie(refreshToken);
         return refreshToken.getValue();
     }
