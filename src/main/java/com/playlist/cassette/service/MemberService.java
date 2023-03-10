@@ -3,6 +3,7 @@ package com.playlist.cassette.service;
 import com.playlist.cassette.dto.member.MemberResponseDto;
 import com.playlist.cassette.dto.member.MemberWithdrawalRequestDto;
 import com.playlist.cassette.dto.member.MemberWithdrawalResponseDto;
+import com.playlist.cassette.dto.tape.TapeResponseDto;
 import com.playlist.cassette.entity.Member;
 import com.playlist.cassette.entity.MemberWithdrawalLog;
 import com.playlist.cassette.entity.Tape;
@@ -30,7 +31,13 @@ public class MemberService {
         if (isWithdrawalMember(member)) {
             throw new UserException(ExceptionCode.ALREADY_WITHDRAWAL_MEMBER, ExceptionCode.ALREADY_WITHDRAWAL_MEMBER.getMessage());
         }
-        return MemberResponseDto.builder().member(member).build();
+
+        List<TapeResponseDto> tapes = member.getTapes().stream().map(TapeResponseDto::new).toList();
+
+        return MemberResponseDto.builder()
+                .member(member)
+                .tapes(tapes)
+                .build();
     }
 
     public Member createMember(Member member) {
