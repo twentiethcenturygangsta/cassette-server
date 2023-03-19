@@ -14,9 +14,11 @@ configurations {
 	}
 }
 
-repositories {
-	mavenLocal()
-	mavenCentral()
+allprojects {
+	repositories {
+		mavenCentral()
+		maven { url 'https://jitpack.io' }
+	}
 }
 
 ext {
@@ -50,7 +52,7 @@ dependencies {
 	implementation 'commons-io:commons-io:2.11.0'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	implementation 'com.twentiethcenturygangsta:our-board:1.0'
+	implementation 'com.github.20thcenturygangsta.jam-board:our-board:v0.0.12'
 
 }
 
