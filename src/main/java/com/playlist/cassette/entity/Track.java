@@ -1,6 +1,6 @@
 package com.playlist.cassette.entity;
 
-import com.twentiethcenturygangsta.ourboard.annoatation.OurBoardEntity;
+import com.github.twentiethcenturygangsta.ourboard.annoatation.OurBoardEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

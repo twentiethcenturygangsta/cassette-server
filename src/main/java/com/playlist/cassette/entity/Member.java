@@ -1,7 +1,7 @@
 package com.playlist.cassette.entity;
 
 import com.playlist.cassette.dto.auth.TokenDto;
-import com.twentiethcenturygangsta.ourboard.annoatation.OurBoardEntity;
+import com.github.twentiethcenturygangsta.ourboard.annoatation.OurBoardEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

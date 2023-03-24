@@ -1,6 +1,6 @@
 package com.playlist.cassette;
 
-import com.twentiethcenturygangsta.ourboard.annoatation.EnableOurBoard;
+import com.github.twentiethcenturygangsta.ourboard.annoatation.EnableOurBoard;
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;

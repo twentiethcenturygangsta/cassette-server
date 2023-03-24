@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/cassette
+    username: sa
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql:
+
+kakao:
+  restApiKey:
+  redirectUrlLocalServer: http://localhost:3000/kakao/bridge
+  redirectUrlDevServer: https://ganstatest.12playlist.com/kakao/bridge
+  redirectUrlProdServer : https://12playlist.com/kakao/bridge
+
+cloud:
+  aws:
+    credentials:
+      accessKey:
+      secretKey:
+
+jwt:
+  secret: asdasdasdasdddddsada
+
+secretKey: qeqwqwqwqwqwqw
